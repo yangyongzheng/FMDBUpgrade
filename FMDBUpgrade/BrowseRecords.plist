@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PurchaseList</key>
+	<dict>
+		<key>id</key>
+		<string>integer primary key autoincrement</string>
+		<key>userId</key>
+		<string>integer not null default 0</string>
+		<key>uniqueId</key>
+		<string>integer not null default 0</string>
+		<key>updateTime</key>
+		<string>datetime default (datetime(&apos;now&apos;, &apos;localtime&apos;))</string>
+		<key>createTime</key>
+		<string>text</string>
+		<key>cateName</key>
+		<string>text</string>
+	</dict>
+	<key>SupplyList</key>
+	<dict>
+		<key>id</key>
+		<string>integer primary key autoincrement</string>
+		<key>userId</key>
+		<string>integer not null default 0</string>
+		<key>uniqueId</key>
+		<string>integer not null default 0</string>
+		<key>updateTime</key>
+		<string>datetime default (datetime(&apos;now&apos;, &apos;localtime&apos;))</string>
+		<key>createTime</key>
+		<string>datetime default (datetime(&apos;now&apos;, &apos;localtime&apos;))</string>
+		<key>url170</key>
+		<string>text</string>
+		<key>title</key>
+		<string>text</string>
+	</dict>
+</dict>
+</plist>
