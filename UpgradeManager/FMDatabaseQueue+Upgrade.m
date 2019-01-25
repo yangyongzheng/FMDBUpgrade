@@ -11,8 +11,10 @@
 #import "FMDatabase+Upgrade.h"
 #import <objc/runtime.h>
 
-static NSString * const FMDBQueueIdentifierUpgrade = @"com.fmdb.queue.identifier.upgrade";
-static const void * YYZFMDBQueueDictionaryAssociationKey = (void *)&YYZFMDBQueueDictionaryAssociationKey;
+// 队列标签前缀
+static NSString * const FMDBUpgradeQueueLabelPrefix = @"com.fmdb.upgrade.queue";
+// 绑定队列的key
+static const void * FMDBUpgradeQueueAssociationKey = (void *)&FMDBUpgradeQueueAssociationKey;
 
 @implementation FMDatabaseQueue (Upgrade)
 
@@ -37,6 +39,12 @@ static const void * YYZFMDBQueueDictionaryAssociationKey = (void *)&YYZFMDBQueue
 - (void)yyz_upgradeTable:(NSString *)tableName withResourceFile:(NSString *)resourceFile {
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_upgradeTable:tableName withResourceFile:resourceFile];
+    }];
+}
+
+- (void)yyz_upgradeTables:(NSArray<NSString *> *)tableNames withResourceFile:(NSString *)resourceFile {
+    [self inDatabase:^(FMDatabase * _Nonnull db) {
+        [db yyz_upgradeTables:tableNames withResourceFile:resourceFile];
     }];
 }
 
@@ -71,39 +79,31 @@ static const void * YYZFMDBQueueDictionaryAssociationKey = (void *)&YYZFMDBQueue
     }
 }
 
-- (void)asyncAddToSerialQueueWithTableName:(NSString *)tableName executionBlock:(void (^)(void))block {
+- (void)asyncConcurrentExecutionBlock:(void (^)(void))block {
     if (block) {
-        dispatch_async([self yyz_serialQueueWithTableName:tableName], block);
+        dispatch_async([self yyz_currentConcurrentQueue], block);
+    }
+}
+
+- (void)barrierAsyncConcurrentExecutionBlock:(void (^)(void))block {
+    if (block) {
+        dispatch_barrier_async([self yyz_currentConcurrentQueue], block);
     }
 }
 
 #pragma mark - Misc
-- (dispatch_queue_t)yyz_serialQueueWithTableName:(NSString *)tableName {
-    dispatch_queue_t queue = nil;
-    
-    NSString *label = nil;
-    if (tableName && [tableName isKindOfClass:[NSString class]] && tableName.length > 0) {
-        label = [NSString stringWithFormat:@"%@.%@", FMDBQueueIdentifierUpgrade, tableName];
-    } else {
-        label = [NSString stringWithFormat:@"%@.%@", FMDBQueueIdentifierUpgrade, self];
+- (dispatch_queue_t)yyz_currentConcurrentQueue {
+    dispatch_queue_t concurrentQueue = objc_getAssociatedObject(self, FMDBUpgradeQueueAssociationKey);
+    if (!concurrentQueue) {
+        NSString *label = [NSString stringWithFormat:@"%@.%@", FMDBUpgradeQueueLabelPrefix, self];
+        concurrentQueue = dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_CONCURRENT);
+        objc_setAssociatedObject(self,
+                                 FMDBUpgradeQueueAssociationKey,
+                                 concurrentQueue,
+                                 OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     
-    NSMutableDictionary *queueDictionary = objc_getAssociatedObject(self, YYZFMDBQueueDictionaryAssociationKey);
-    if (queueDictionary) {
-        queue = [queueDictionary objectForKey:label];
-        if (!queue) {
-            queue = dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_SERIAL);
-            [queueDictionary setObject:queue forKey:label];
-            objc_setAssociatedObject(self, YYZFMDBQueueDictionaryAssociationKey, queueDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }
-    } else {
-        queue = dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_SERIAL);
-        queueDictionary = [NSMutableDictionary dictionary];
-        [queueDictionary setObject:queue forKey:label];
-        objc_setAssociatedObject(self, YYZFMDBQueueDictionaryAssociationKey, queueDictionary, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    
-    return queue;
+    return concurrentQueue;
 }
 
 @end

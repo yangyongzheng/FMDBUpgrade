@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8A59A669B68B6C9BBB133828 /* libPods-FMDBUpgrade.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0960422738DA406B4C85062D /* libPods-FMDBUpgrade.a */; };
+		CE933A5421FAE5EA00D6BAA8 /* FMDBUpgrade.podspec in Resources */ = {isa = PBXBuildFile; fileRef = CE933A5321FAE5EA00D6BAA8 /* FMDBUpgrade.podspec */; };
 		CE9B4DFB21E868570039B89B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4DFA21E868570039B89B /* AppDelegate.m */; };
 		CE9B4DFE21E868570039B89B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4DFD21E868570039B89B /* ViewController.m */; };
 		CE9B4E0121E868570039B89B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE9B4DFF21E868570039B89B /* Main.storyboard */; };
@@ -26,6 +27,7 @@
 		0960422738DA406B4C85062D /* libPods-FMDBUpgrade.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FMDBUpgrade.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A5083D370E7DCD7A652FF1F /* Pods-FMDBUpgrade.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FMDBUpgrade.release.xcconfig"; path = "Pods/Target Support Files/Pods-FMDBUpgrade/Pods-FMDBUpgrade.release.xcconfig"; sourceTree = "<group>"; };
 		4611AD663953F938D53F305C /* Pods-FMDBUpgrade.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FMDBUpgrade.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FMDBUpgrade/Pods-FMDBUpgrade.debug.xcconfig"; sourceTree = "<group>"; };
+		CE933A5321FAE5EA00D6BAA8 /* FMDBUpgrade.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FMDBUpgrade.podspec; sourceTree = SOURCE_ROOT; };
 		CE9B4DF621E868570039B89B /* FMDBUpgrade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FMDBUpgrade.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9B4DF921E868570039B89B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CE9B4DFA21E868570039B89B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				CE9B4E2C21E86F450039B89B /* BrowseRecords.plist */,
 				CE9B4E0721E868580039B89B /* Info.plist */,
 				CE9B4E0821E868580039B89B /* main.m */,
+				CE933A5321FAE5EA00D6BAA8 /* FMDBUpgrade.podspec */,
 			);
 			path = FMDBUpgrade;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 			files = (
 				CE9B4E0621E868580039B89B /* LaunchScreen.storyboard in Resources */,
 				CE9B4E2821E86A870039B89B /* SQLite Statements.md in Resources */,
+				CE933A5421FAE5EA00D6BAA8 /* FMDBUpgrade.podspec in Resources */,
 				CE9B4E0321E868580039B89B /* Assets.xcassets in Resources */,
 				CE9B4E2D21E86F450039B89B /* BrowseRecords.plist in Resources */,
 				CE9B4E0121E868570039B89B /* Main.storyboard in Resources */,

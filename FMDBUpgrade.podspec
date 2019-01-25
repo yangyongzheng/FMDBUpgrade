@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "FMDBUpgrade"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "Upgrade database extension class based on FMDB."
   s.homepage     = "https://github.com/yangyongzheng/FMDBUpgrade"
   s.license      = "MIT"

@@ -6,7 +6,7 @@
 //  Copyright © 2018年 yangyongzheng. All rights reserved.
 //
 
-#import <FMDB.h>
+#import "FMDB.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)yyz_databaseWithPath:(NSString *)dbPath;
 
 - (void)yyz_upgradeTable:(NSString *)tableName withResourceFile:(NSString *)resourceFile;
+
+- (void)yyz_upgradeTables:(NSArray<NSString *> *)tableNames withResourceFile:(NSString *)resourceFile;
 
 - (BOOL)yyz_createTable:(NSString *)tableName withResourceFile:(NSString *)resourceFile;
 
@@ -29,12 +31,19 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)yyz_transactionExecuteStatements:(NSArray *)sqlStatements;
 
 /**
- 异步添加任务到串行队列, 建议在主线程调用此API
+ 添加异步并发执行任务，一般用于查询操作
 
- @param tableName 待执行任务的数据库表
  @param block 任务Block
  */
-- (void)asyncAddToSerialQueueWithTableName:(NSString *)tableName executionBlock:(void(^)(void))block;
+- (void)asyncConcurrentExecutionBlock:(void (^)(void))block;
+
+/**
+ Submits a barrier block for asynchronous execution and returns immediately.
+ 一般用于增/删/改操作
+
+ @param block 任务Block
+ */
+- (void)barrierAsyncConcurrentExecutionBlock:(void (^)(void))block;
 
 @end
 
