@@ -1,18 +1,11 @@
 
-//  FMDatabase+Upgrade.m
-//  FMDBDemo
-//
-//  Created by yangyongzheng on 2018/9/11.
-//  Copyright © 2018年 yangyongzheng. All rights reserved.
-//
-
 #import "FMDatabase+Upgrade.h"
 #import "FMDatabaseUpgradeHelper.h"
 
 @implementation FMDatabase (Upgrade)
 
 + (instancetype)yyz_databaseWithPath:(NSString *)dbPath {
-    if ([FMDatabaseUpgradeHelper isNonEmptyForString:dbPath]) {
+    if (FMDatabaseUpgradeHelper.isNotEmptyForString(dbPath)) {
         if (dbPath.pathExtension.length == 0) {// 无扩展时添加扩展
             dbPath = [dbPath stringByAppendingPathExtension:@"db"];
         }
@@ -27,6 +20,14 @@
         }
     }
     return [FMDatabase databaseWithPath:dbPath];
+}
+
+- (void)yyz_upgradeTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
+    
+}
+
+- (void)yyz_createTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
+    
 }
 
 - (void)yyz_upgradeTable:(NSString *)tableName withResourceFile:(NSString *)resourceFile {
@@ -73,17 +74,18 @@
     return NO;
 }
 
-- (BOOL)yyz_deleteTable:(NSString *)tableName {
-    if ([FMDatabaseUpgradeHelper isNonEmptyForString:tableName]) {
-        NSString *sql = [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@", tableName];
-        return [self executeUpdate:sql];
+- (void)yyz_deleteTables:(NSArray<NSString *> *)tableNames {
+    if (FMDatabaseUpgradeHelper.isNotEmptyForArray(tableNames)) {
+        for (NSString *table in tableNames) {
+            NSString *sql = [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@", table];
+            [self executeUpdate:sql];
+        }
     }
-    return NO;
 }
 
 #pragma mark 事物更新
-- (void)yyz_transactionExecuteStatements:(NSArray *)sqlStatements {
-    if ([FMDatabaseUpgradeHelper isNonEmptyForArray:sqlStatements]) {
+- (void)yyz_transactionExecuteStatements:(NSArray<NSString *> *)sqlStatements {
+    if (FMDatabaseUpgradeHelper.isNotEmptyForArray(sqlStatements)) {
         [self beginTransaction];
         
         BOOL isRollBack = NO;

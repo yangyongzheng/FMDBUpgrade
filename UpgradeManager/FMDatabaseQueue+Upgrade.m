@@ -1,25 +1,12 @@
-//
-//  FMDatabaseQueue+Upgrade.m
-//  FMDBDemo
-//
-//  Created by yangyongzheng on 2018/9/11.
-//  Copyright © 2018年 yangyongzheng. All rights reserved.
-//
 
 #import "FMDatabaseQueue+Upgrade.h"
 #import "FMDatabaseUpgradeHelper.h"
-#import "FMDatabase+Upgrade.h"
 #import <objc/runtime.h>
-
-// 队列标签前缀
-static NSString * const FMDBUpgradeQueueLabelPrefix = @"com.fmdb.upgrade.queue";
-// 绑定队列的key
-static const void * FMDBUpgradeQueueAssociationKey = (void *)&FMDBUpgradeQueueAssociationKey;
 
 @implementation FMDatabaseQueue (Upgrade)
 
 + (instancetype)yyz_databaseWithPath:(NSString *)dbPath {
-    if ([FMDatabaseUpgradeHelper isNonEmptyForString:dbPath]) {
+    if (FMDatabaseUpgradeHelper.isNotEmptyForString(dbPath)) {
         if (dbPath.pathExtension.length == 0) {// 无扩展时添加扩展
             dbPath = [dbPath stringByAppendingPathExtension:@"db"];
         }
@@ -36,38 +23,22 @@ static const void * FMDBUpgradeQueueAssociationKey = (void *)&FMDBUpgradeQueueAs
     return [FMDatabaseQueue databaseQueueWithPath:dbPath];
 }
 
-- (void)yyz_upgradeTable:(NSString *)tableName withResourceFile:(NSString *)resourceFile {
-    [self inDatabase:^(FMDatabase * _Nonnull db) {
-        [db yyz_upgradeTable:tableName withResourceFile:resourceFile];
-    }];
-}
-
-- (void)yyz_upgradeTables:(NSArray<NSString *> *)tableNames withResourceFile:(NSString *)resourceFile {
-    [self inDatabase:^(FMDatabase * _Nonnull db) {
-        [db yyz_upgradeTables:tableNames withResourceFile:resourceFile];
-    }];
-}
-
-- (BOOL)yyz_createTable:(NSString *)tableName withResourceFile:(NSString *)resourceFile {
-    __block BOOL result = NO;
-    [self inDatabase:^(FMDatabase * _Nonnull db) {
-        result = [db yyz_createTable:tableName withResourceFile:resourceFile];
-    }];
+- (void)yyz_upgradeTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
     
-    return result;
 }
 
-- (BOOL)yyz_deleteTable:(NSString *)tableName {
-    __block BOOL result = NO;
-    [self inDatabase:^(FMDatabase * _Nonnull db) {
-        result = [db  yyz_deleteTable:tableName];
-    }];
+- (void)yyz_createTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
     
-    return result;
+}
+
+- (void)yyz_deleteTables:(NSArray<NSString *> *)tableNames {
+    [self inDatabase:^(FMDatabase * _Nonnull db) {
+        [db yyz_deleteTables:tableNames];
+    }];
 }
 
 - (void)yyz_transactionExecuteStatements:(NSArray *)sqlStatements {
-    if ([FMDatabaseUpgradeHelper isNonEmptyForArray:sqlStatements]) {
+    if (FMDatabaseUpgradeHelper.isNotEmptyForArray(sqlStatements)) {
         [self inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
             for (NSString *sql in sqlStatements) {
                 if (![db executeUpdate:sql]) {
@@ -93,17 +64,15 @@ static const void * FMDBUpgradeQueueAssociationKey = (void *)&FMDBUpgradeQueueAs
 
 #pragma mark - Misc
 - (dispatch_queue_t)yyz_currentConcurrentQueue {
-    dispatch_queue_t concurrentQueue = objc_getAssociatedObject(self, FMDBUpgradeQueueAssociationKey);
-    if (!concurrentQueue) {
-        NSString *label = [NSString stringWithFormat:@"%@.%@", FMDBUpgradeQueueLabelPrefix, self];
-        concurrentQueue = dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_CONCURRENT);
-        objc_setAssociatedObject(self,
-                                 FMDBUpgradeQueueAssociationKey,
-                                 concurrentQueue,
-                                 OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    static const void * const associationKey = (void *)&associationKey;
+    dispatch_queue_t queue = objc_getAssociatedObject(self, associationKey);
+    if (!queue) {
+        NSString *label = [NSString stringWithFormat:@"com.fmdb.upgrade.queue.%@", self];
+        queue = dispatch_queue_create(label.UTF8String, DISPATCH_QUEUE_CONCURRENT);
+        objc_setAssociatedObject(self, associationKey, queue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     
-    return concurrentQueue;
+    return queue;
 }
 
 @end

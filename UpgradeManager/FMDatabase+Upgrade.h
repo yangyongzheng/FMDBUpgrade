@@ -1,26 +1,19 @@
-//
-//  FMDatabase+Upgrade.h
-//  FMDBDemo
-//
-//  Created by yangyongzheng on 2018/9/11.
-//  Copyright © 2018年 yangyongzheng. All rights reserved.
-//
 
 #import "FMDB.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NSArray<NSDictionary<NSString *, NSDictionary<NSString *, NSString *> *> *> * FMDBUpgradeTableConfigArray;
+
 @interface FMDatabase (Upgrade)
 
 + (instancetype)yyz_databaseWithPath:(NSString *)dbPath;
 
-- (void)yyz_upgradeTable:(NSString *)tableName withResourceFile:(NSString *)resourceFile;
+- (void)yyz_upgradeTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig;
 
-- (void)yyz_upgradeTables:(NSArray<NSString *> *)tableNames withResourceFile:(NSString *)resourceFile;
+- (void)yyz_createTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig;
 
-- (BOOL)yyz_createTable:(NSString *)tableName withResourceFile:(NSString *)resourceFile;
-
-- (BOOL)yyz_deleteTable:(NSString *)tableName;
+- (void)yyz_deleteTables:(NSArray<NSString *> *)tableNames;
 
 /**
  事务提交sql语句
@@ -28,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param sqlStatements sql语句数组
  */
-- (void)yyz_transactionExecuteStatements:(NSArray *)sqlStatements;
+- (void)yyz_transactionExecuteStatements:(NSArray<NSString *> *)sqlStatements;
 
 /**
  事务更新

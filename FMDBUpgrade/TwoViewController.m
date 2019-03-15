@@ -40,45 +40,45 @@
 }
 
 - (void)upgradeText {
-    static NSInteger count = 0;
-    if (count % 2 == 0) {
-        int64_t st = CFAbsoluteTimeGetCurrent() * 1000;
-        [self.dbQueue barrierAsyncConcurrentExecutionBlock:^{
-            [self.dbQueue yyz_upgradeTables:@[@"PurchaseList", @"SupplyList"]
-                           withResourceFile:@"BrowseRecords"];
-        }];
-        
-        [self.dbQueue barrierAsyncConcurrentExecutionBlock:^{
-            [self.dbQueue inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
-                for (int i = 0; i < 5000; i++) {
-                    [db executeUpdateWithFormat:@"INSERT INTO SupplyList (userId,uniqueId,title) VALUES (%d,%d,%@)", 1000+i, i, @"标题"];
-                }
-            }];
-        }];
-        
-        int64_t et = CFAbsoluteTimeGetCurrent() * 1000;
-        NSLog(@"update duration: %lld", et - st);
-    } else {
-        int64_t st = CFAbsoluteTimeGetCurrent() * 1000;
-        
-        [self.dbQueue asyncConcurrentExecutionBlock:^{
-            __block int64_t primaryId = 0;
-            [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
-                FMResultSet *resultSet = [db executeQuery:@"select * from SupplyList ORDER BY id DESC limit 1000"];
-                while ([resultSet next]) {
-                    if (primaryId == 0) {
-                        primaryId = [resultSet longLongIntForColumn:@"id"];
-                    }
-                }
-            }];
-            NSLog(@"primaryId %lld %@", primaryId, [NSThread currentThread]);
-        }];
-        
-        int64_t et = CFAbsoluteTimeGetCurrent() * 1000;
-        NSLog(@"fetch duration: %lld", et - st);
-    }
-    
-    count++;
+//    static NSInteger count = 0;
+//    if (count % 2 == 0) {
+//        int64_t st = CFAbsoluteTimeGetCurrent() * 1000;
+//        [self.dbQueue barrierAsyncConcurrentExecutionBlock:^{
+//            [self.dbQueue yyz_upgradeTables:@[@"PurchaseList", @"SupplyList"]
+//                           withResourceFile:@"BrowseRecords"];
+//        }];
+//        
+//        [self.dbQueue barrierAsyncConcurrentExecutionBlock:^{
+//            [self.dbQueue inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+//                for (int i = 0; i < 5000; i++) {
+//                    [db executeUpdateWithFormat:@"INSERT INTO SupplyList (userId,uniqueId,title) VALUES (%d,%d,%@)", 1000+i, i, @"标题"];
+//                }
+//            }];
+//        }];
+//        
+//        int64_t et = CFAbsoluteTimeGetCurrent() * 1000;
+//        NSLog(@"update duration: %lld", et - st);
+//    } else {
+//        int64_t st = CFAbsoluteTimeGetCurrent() * 1000;
+//        
+//        [self.dbQueue asyncConcurrentExecutionBlock:^{
+//            __block int64_t primaryId = 0;
+//            [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+//                FMResultSet *resultSet = [db executeQuery:@"select * from SupplyList ORDER BY id DESC limit 1000"];
+//                while ([resultSet next]) {
+//                    if (primaryId == 0) {
+//                        primaryId = [resultSet longLongIntForColumn:@"id"];
+//                    }
+//                }
+//            }];
+//            NSLog(@"primaryId %lld %@", primaryId, [NSThread currentThread]);
+//        }];
+//        
+//        int64_t et = CFAbsoluteTimeGetCurrent() * 1000;
+//        NSLog(@"fetch duration: %lld", et - st);
+//    }
+//    
+//    count++;
 }
 
 @end

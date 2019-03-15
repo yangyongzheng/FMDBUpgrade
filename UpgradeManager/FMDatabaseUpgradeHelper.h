@@ -1,16 +1,13 @@
-//
-//  FMDatabaseUpgradeHelper.h
-//  FMDBDemo
-//
-//  Created by yangyongzheng on 2018/9/11.
-//  Copyright © 2018年 yangyongzheng. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 
 @class FMDatabase;
 
 @interface FMDatabaseUpgradeHelper : NSObject
+
+@property (class, nonatomic, readonly, copy) BOOL(^ isNotEmptyForString)(id string);
+@property (class, nonatomic, readonly, copy) BOOL(^ isNotEmptyForArray)(id array);
+@property (class, nonatomic, readonly, copy) BOOL(^ isNotEmptyForDictionary)(id dictionary);
 
 + (BOOL)isNonEmptyForString:(id)string;
 + (BOOL)isNonEmptyForArray:(id)array;

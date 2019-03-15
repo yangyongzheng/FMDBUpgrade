@@ -1,17 +1,28 @@
-//
-//  FMDatabaseUpgradeHelper.m
-//  FMDBDemo
-//
-//  Created by yangyongzheng on 2018/9/11.
-//  Copyright © 2018年 yangyongzheng. All rights reserved.
-//
 
 #import "FMDatabaseUpgradeHelper.h"
-#import <FMDB.h>
+#import "FMDB.h"
 
 static NSString * const FMDBUpgradeResourceExtPlist = @"plist";
 
 @implementation FMDatabaseUpgradeHelper
+
++ (BOOL (^)(id))isNotEmptyForString {
+    return ^BOOL(id string) {
+        return string && [string isKindOfClass:[NSString class]] && ((NSString *)string).length > 0;
+    };
+}
+
++ (BOOL (^)(id))isNotEmptyForArray {
+    return ^BOOL(id array) {
+        return array && [array isKindOfClass:[NSArray class]] && ((NSArray *)array).count > 0;
+    };
+}
+
++ (BOOL (^)(id))isNotEmptyForDictionary {
+    return ^BOOL(id dictionary) {
+        return dictionary && [dictionary isKindOfClass:[NSDictionary class]] && ((NSDictionary *)dictionary).count > 0;
+    };
+}
 
 + (BOOL)isNonEmptyForString:(id)string {
     return string && [string isKindOfClass:[NSString class]] && ((NSString *)string).length > 0;
