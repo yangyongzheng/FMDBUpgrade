@@ -4,6 +4,7 @@
 
 @implementation FMDatabase (Upgrade)
 
+#pragma mark Init
 + (instancetype)yyz_databaseWithPath:(NSString *)dbPath {
     if (FMDatabaseUpgradeHelper.isNotEmptyForString(dbPath)) {
         if (dbPath.pathExtension.length == 0) {// 无扩展时添加扩展
@@ -22,64 +23,68 @@
     return [FMDatabase databaseWithPath:dbPath];
 }
 
+#pragma mark 升级数据库表
 - (void)yyz_upgradeTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
-    
-}
-
-- (void)yyz_createTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
-    
-}
-
-- (void)yyz_upgradeTable:(NSString *)tableName withResourceFile:(NSString *)resourceFile {
-    if ([FMDatabaseUpgradeHelper isNonEmptyForString:tableName] &&
-        [FMDatabaseUpgradeHelper isNonEmptyForString:resourceFile]) {
-        if ([self tableExists:tableName]) {
-            // 已创建表时检查是否需要更新表
-            NSArray *deleteColumnsSqls = [FMDatabaseUpgradeHelper statementsForDeleteColumnsInTable:tableName withDatabase:self resourceFile:resourceFile];
-            NSArray *addColumnsSqls = [FMDatabaseUpgradeHelper statementsForAddColumnsInTable:tableName withDatabase:self resourceFile:resourceFile];
-            NSMutableArray *updateStatements = [NSMutableArray array];
-            [updateStatements addObjectsFromArray:addColumnsSqls];
-            [updateStatements addObjectsFromArray:deleteColumnsSqls];
-            [self yyz_transactionExecuteStatements:updateStatements];
-            NSLog(@"update: %@ -> %@", tableName, updateStatements);
-        } else {
-            // 创建表
-            [self yyz_createTable:tableName withResourceFile:resourceFile];
-            NSLog(@"create: %@", tableName);
-        }
-    }
-}
-
-- (void)yyz_upgradeTables:(NSArray<NSString *> *)tableNames withResourceFile:(NSString *)resourceFile {
-    if ([FMDatabaseUpgradeHelper isNonEmptyForArray:tableNames] &&
-        [FMDatabaseUpgradeHelper isNonEmptyForString:resourceFile]) {
-        for (NSString *tableName in tableNames) {
-            [self yyz_upgradeTable:tableName withResourceFile:resourceFile];
-        }
-    }
-}
-
-- (BOOL)yyz_createTable:(NSString *)tableName withResourceFile:(NSString *)resourceFile {
-    if ([FMDatabaseUpgradeHelper isNonEmptyForString:tableName] &&
-        [FMDatabaseUpgradeHelper isNonEmptyForString:resourceFile]) {
-        if ([self tableExists:tableName]) {
-            return YES; // 已存在表时直接返回 YES
-        } else {
-            NSString *sql = [FMDatabaseUpgradeHelper statementForCreateTable:tableName withResourceFile:resourceFile];
-            if (sql) {
-                return [self executeUpdate:sql];
+    if (FMDatabaseUpgradeHelper.isNotEmptyForArray(tableConfig)) {
+        FMDBUpgradeTableConfigArray newTableConfig = [tableConfig copy];
+        
+        for (FMDBUpgradeTableDictionary tableDictionary in newTableConfig) {
+            if (FMDatabaseUpgradeHelper.isNotEmptyForDictionary(tableDictionary)) {
+                __weak typeof(self) weakSelf = self;
+                [tableDictionary enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSDictionary<NSString *,NSString *> * _Nonnull obj, BOOL * _Nonnull stop) {
+                    __strong typeof(weakSelf) strongSelf = weakSelf;
+                    if ([strongSelf tableExists:key]) {
+                        NSArray *localTableColumns = [strongSelf columnsInTable:key];
+                        NSArray *referTableColumns = obj.allKeys;
+                        NSPredicate *localPredicate = [NSPredicate predicateWithFormat:@"NOT (SELF in %@)", localTableColumns];
+                        NSPredicate *referPredicate = [NSPredicate predicateWithFormat:@"NOT (SELF in %@)", referTableColumns];
+                        NSArray *differColumnsOne = [referTableColumns filteredArrayUsingPredicate:localPredicate];
+                        NSArray *differColumnsTwo = [localTableColumns filteredArrayUsingPredicate:referPredicate];
+                        NSLog(@"%@-%@", differColumnsOne, differColumnsTwo);
+                    } else {
+                        [strongSelf yyz_createTableWithConfig:@[tableDictionary]];
+                    }
+                }];
+            } else {
+                NSAssert(NO, @"入参tableConfig结构不对");
             }
         }
     }
-    return NO;
 }
 
+#pragma mark 创建数据库表
+- (void)yyz_createTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
+    if (FMDatabaseUpgradeHelper.isNotEmptyForArray(tableConfig)) {
+        FMDBUpgradeTableConfigArray newArray = [tableConfig copy];
+        
+        for (FMDBUpgradeTableDictionary tableDictionary in newArray) {
+            if (FMDatabaseUpgradeHelper.isNotEmptyForDictionary(tableDictionary)) {
+                __weak typeof(self) weakSelf = self;
+                [tableDictionary enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSDictionary<NSString *,NSString *> * _Nonnull obj, BOOL * _Nonnull stop) {
+                    __strong typeof(weakSelf) strongSelf = weakSelf;
+                    if (![strongSelf tableExists:key]) {
+                        NSString *sql = [strongSelf createTableStatementWithName:key configDictionary:obj];
+                        [self executeUpdate:sql];
+                    }
+                }];
+            } else {
+                NSAssert(NO, @"入参tableConfig结构不对");
+            }
+        }
+    }
+}
+
+#pragma mark 删除数据库表
 - (void)yyz_deleteTables:(NSArray<NSString *> *)tableNames {
     if (FMDatabaseUpgradeHelper.isNotEmptyForArray(tableNames)) {
-        for (NSString *table in tableNames) {
-            NSString *sql = [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@", table];
-            [self executeUpdate:sql];
-        }
+        NSArray *newTableNames = [tableNames copy];
+        
+        [self yyz_inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
+            for (NSString *table in newTableNames) {
+                NSString *sql = [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@", table];
+                [db executeUpdate:sql];
+            }
+        }];
     }
 }
 
@@ -117,6 +122,38 @@
             [self commit];
         }
     }
+}
+
+#pragma mark - Misc
+- (NSString *)createTableStatementWithName:(NSString *)tableName configDictionary:(NSDictionary<NSString *, NSString *> *)configDictionary {
+    if (FMDatabaseUpgradeHelper.isNotEmptyForString(tableName) && FMDatabaseUpgradeHelper.isNotEmptyForDictionary(configDictionary)) {
+        __block NSMutableString *components = [NSMutableString string];
+        [configDictionary enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+            NSString *element = [NSString stringWithFormat:@"%@ %@, ", key, obj];   // 拼接字段和字段类型
+            [components appendString:element];
+        }];
+        if (components.length > 2) {
+            [components deleteCharactersInRange:NSMakeRange(components.length-2, 2)];
+        }
+        if (components.length > 0) {
+            return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@)", tableName, components];
+        }
+    }
+    
+    return nil;
+}
+
+#pragma mark 本地数据库表的字段集
+- (NSArray *)columnsInTable:(NSString *)tableName {
+    NSMutableArray *tempArray = [NSMutableArray array];
+    FMResultSet *resultSet = [self getTableSchema:tableName];
+    while ([resultSet next]) {
+        NSString *columnName = [resultSet stringForColumn:@"name"];
+        if (FMDatabaseUpgradeHelper.isNotEmptyForString(columnName)) {
+            [tempArray addObject:columnName];
+        }
+    }
+    return FMDatabaseUpgradeHelper.isNotEmptyForArray(tempArray) ? [tempArray copy] : nil;
 }
 
 @end

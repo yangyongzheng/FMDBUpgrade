@@ -29,17 +29,7 @@
     NSString *dbPath = [NSString stringWithFormat:@"%@/Documents/Database/BrowseRecords.db", NSHomeDirectory()];
     self.dbQueue = [FMDatabaseQueue yyz_databaseWithPath:dbPath];
     [self.dbQueue asyncConcurrentExecutionBlock:^{
-        
-    }];
-    
-    FMDatabaseQueue *dbQueue2 = [FMDatabaseQueue yyz_databaseWithPath:dbPath];
-    [dbQueue2 asyncConcurrentExecutionBlock:^{
-        
-    }];
-    
-    FMDatabaseQueue *dbQueue3 = [FMDatabaseQueue yyz_databaseWithPath:dbPath];
-    [dbQueue3 asyncConcurrentExecutionBlock:^{
-        
+        [self.dbQueue yyz_upgradeTableWithConfig:@[self.pageLogsTableConfig]];
     }];
 }
 

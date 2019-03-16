@@ -24,11 +24,15 @@
 }
 
 - (void)yyz_upgradeTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
-    
+    [self inDatabase:^(FMDatabase * _Nonnull db) {
+        [db yyz_upgradeTableWithConfig:tableConfig];
+    }];
 }
 
 - (void)yyz_createTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
-    
+    [self inDatabase:^(FMDatabase * _Nonnull db) {
+        [db yyz_createTableWithConfig:tableConfig];
+    }];
 }
 
 - (void)yyz_deleteTables:(NSArray<NSString *> *)tableNames {

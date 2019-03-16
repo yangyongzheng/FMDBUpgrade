@@ -3,7 +3,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NSArray<NSDictionary<NSString *, NSDictionary<NSString *, NSString *> *> *> * FMDBUpgradeTableConfigArray;
+typedef NSDictionary<NSString *, NSDictionary<NSString *, NSString *> *> * FMDBUpgradeTableDictionary;
+typedef NSArray<FMDBUpgradeTableDictionary> * FMDBUpgradeTableConfigArray;
 
 @interface FMDatabase (Upgrade)
 
