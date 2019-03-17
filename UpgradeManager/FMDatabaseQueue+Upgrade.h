@@ -7,9 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)yyz_databaseWithPath:(NSString *)dbPath;
 
-- (void)yyz_upgradeTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig;
+- (void)yyz_upgradeTableWithConfig:(NSArray<FMDBUpgradeTableDictionary> *)tableConfig;
 
-- (void)yyz_createTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig;
+- (void)yyz_createTableWithConfig:(NSArray<FMDBUpgradeTableDictionary> *)tableConfig;
 
 - (void)yyz_deleteTables:(NSArray<NSString *> *)tableNames;
 
@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param block 任务Block
  */
-- (void)asyncConcurrentExecutionBlock:(void (^)(void))block;
+- (void)asyncConcurrentExecutionBlock:(dispatch_block_t)block;
 
 /**
  Submits a barrier block for asynchronous execution and returns immediately.
@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param block 任务Block
  */
-- (void)barrierAsyncConcurrentExecutionBlock:(void (^)(void))block;
+- (void)barrierAsyncConcurrentExecutionBlock:(dispatch_block_t)block;
 
 @end
 

@@ -15,6 +15,7 @@ static BOOL FMDBUpgradeAssertDictionaryNotEmpty(id dictionary) {
     return dictionary && [dictionary isKindOfClass:[NSDictionary class]] && ((NSDictionary *)dictionary).count > 0;
 }
 
+#pragma mark - Public
 #pragma mark Init
 + (instancetype)yyz_databaseWithPath:(NSString *)dbPath {
     if (FMDBUpgradeAssertStringNotEmpty(dbPath)) {
@@ -35,9 +36,9 @@ static BOOL FMDBUpgradeAssertDictionaryNotEmpty(id dictionary) {
 }
 
 #pragma mark 升级数据库表
-- (void)yyz_upgradeTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
+- (void)yyz_upgradeTableWithConfig:(NSArray<FMDBUpgradeTableDictionary> *)tableConfig {
     if (FMDBUpgradeAssertArrayNotEmpty(tableConfig)) {
-        FMDBUpgradeTableConfigArray newTableConfig = [tableConfig copy];
+        NSArray<FMDBUpgradeTableDictionary> *newTableConfig = [tableConfig copy];
         
         for (FMDBUpgradeTableDictionary tableDictionary in newTableConfig) {
             if (FMDBUpgradeAssertDictionaryNotEmpty(tableDictionary)) {
@@ -66,9 +67,9 @@ static BOOL FMDBUpgradeAssertDictionaryNotEmpty(id dictionary) {
 }
 
 #pragma mark 创建数据库表
-- (void)yyz_createTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
+- (void)yyz_createTableWithConfig:(NSArray<FMDBUpgradeTableDictionary> *)tableConfig {
     if (FMDBUpgradeAssertArrayNotEmpty(tableConfig)) {
-        FMDBUpgradeTableConfigArray newArray = [tableConfig copy];
+        NSArray<FMDBUpgradeTableDictionary> *newArray = [tableConfig copy];
         
         __block NSMutableArray *sqlStatements = [NSMutableArray array];
         for (FMDBUpgradeTableDictionary tableDictionary in newArray) {
@@ -92,6 +93,7 @@ static BOOL FMDBUpgradeAssertDictionaryNotEmpty(id dictionary) {
                 NSAssert(NO, @"入参`tableConfig`数组中元素必须为`FMDBUpgradeTableDictionary`类型且非空。");
             }
         }
+        
         if (sqlStatements.count > 0) {
             NSString *sql = [sqlStatements componentsJoinedByString:@" "];
             [self executeStatements:sql];

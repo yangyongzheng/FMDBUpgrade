@@ -22,13 +22,13 @@
     return [FMDatabaseQueue databaseQueueWithPath:dbPath];
 }
 
-- (void)yyz_upgradeTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
+- (void)yyz_upgradeTableWithConfig:(NSArray<FMDBUpgradeTableDictionary> *)tableConfig {
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_upgradeTableWithConfig:tableConfig];
     }];
 }
 
-- (void)yyz_createTableWithConfig:(FMDBUpgradeTableConfigArray)tableConfig {
+- (void)yyz_createTableWithConfig:(NSArray<FMDBUpgradeTableDictionary> *)tableConfig {
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_createTableWithConfig:tableConfig];
     }];
@@ -56,13 +56,13 @@
     }
 }
 
-- (void)asyncConcurrentExecutionBlock:(void (^)(void))block {
+- (void)asyncConcurrentExecutionBlock:(dispatch_block_t)block {
     if (block) {
         dispatch_async([self yyz_currentConcurrentQueue], block);
     }
 }
 
-- (void)barrierAsyncConcurrentExecutionBlock:(void (^)(void))block {
+- (void)barrierAsyncConcurrentExecutionBlock:(dispatch_block_t)block {
     if (block) {
         dispatch_barrier_async([self yyz_currentConcurrentQueue], block);
     }
