@@ -1,12 +1,11 @@
 
 #import "FMDatabaseQueue+Upgrade.h"
-#import "FMDatabaseUpgradeHelper.h"
 #import <objc/runtime.h>
 
 @implementation FMDatabaseQueue (Upgrade)
 
 + (instancetype)yyz_databaseWithPath:(NSString *)dbPath {
-    if (FMDatabaseUpgradeHelper.isNotEmptyForString(dbPath)) {
+    if (dbPath && [dbPath isKindOfClass:[NSString class]] && dbPath.length > 0) {
         if (dbPath.pathExtension.length == 0) {// 无扩展时添加扩展
             dbPath = [dbPath stringByAppendingPathExtension:@"db"];
         }
@@ -41,13 +40,16 @@
     }];
 }
 
-- (void)yyz_transactionExecuteStatements:(NSArray *)sqlStatements {
-    if (FMDatabaseUpgradeHelper.isNotEmptyForArray(sqlStatements)) {
+- (void)yyz_transactionExecuteStatements:(NSArray<NSString *> *)sqlStatements {
+    if (sqlStatements && [sqlStatements isKindOfClass:[NSArray class]] && sqlStatements.count > 0) {
+        NSArray *statements = [sqlStatements copy];
         [self inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
-            for (NSString *sql in sqlStatements) {
-                if (![db executeUpdate:sql]) {
-                    *rollback = YES;
-                    break;
+            for (NSString *sql in statements) {
+                if ([sql isKindOfClass:[NSString class]] && sql.length > 0) {
+                    if (![db executeUpdate:sql]) {
+                        *rollback = YES;
+                        break;
+                    }
                 }
             }
         }];

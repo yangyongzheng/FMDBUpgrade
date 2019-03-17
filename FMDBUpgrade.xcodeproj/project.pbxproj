@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8A59A669B68B6C9BBB133828 /* libPods-FMDBUpgrade.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0960422738DA406B4C85062D /* libPods-FMDBUpgrade.a */; };
+		CE4805ED223E22AC004F48E6 /* FMDBUpgradeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4805EC223E22AC004F48E6 /* FMDBUpgradeTests.m */; };
 		CE933A5421FAE5EA00D6BAA8 /* FMDBUpgrade.podspec in Resources */ = {isa = PBXBuildFile; fileRef = CE933A5321FAE5EA00D6BAA8 /* FMDBUpgrade.podspec */; };
 		CE9B4DFB21E868570039B89B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4DFA21E868570039B89B /* AppDelegate.m */; };
 		CE9B4DFE21E868570039B89B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4DFD21E868570039B89B /* ViewController.m */; };
@@ -16,17 +17,29 @@
 		CE9B4E0621E868580039B89B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE9B4E0421E868580039B89B /* LaunchScreen.storyboard */; };
 		CE9B4E0921E868580039B89B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4E0821E868580039B89B /* main.m */; };
 		CE9B4E2521E86A870039B89B /* FMDatabase+Upgrade.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4E2021E86A870039B89B /* FMDatabase+Upgrade.m */; };
-		CE9B4E2621E86A870039B89B /* FMDatabaseUpgradeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4E2121E86A870039B89B /* FMDatabaseUpgradeHelper.m */; };
 		CE9B4E2721E86A870039B89B /* FMDatabaseQueue+Upgrade.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4E2221E86A870039B89B /* FMDatabaseQueue+Upgrade.m */; };
 		CE9B4E2821E86A870039B89B /* SQLite Statements.md in Resources */ = {isa = PBXBuildFile; fileRef = CE9B4E2321E86A870039B89B /* SQLite Statements.md */; };
 		CE9B4E2B21E86C730039B89B /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4E2A21E86C730039B89B /* TwoViewController.m */; };
 		CE9B4E2D21E86F450039B89B /* BrowseRecords.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9B4E2C21E86F450039B89B /* BrowseRecords.plist */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CE4805EF223E22AC004F48E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CE9B4DEE21E868570039B89B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CE9B4DF521E868570039B89B;
+			remoteInfo = FMDBUpgrade;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0960422738DA406B4C85062D /* libPods-FMDBUpgrade.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FMDBUpgrade.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A5083D370E7DCD7A652FF1F /* Pods-FMDBUpgrade.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FMDBUpgrade.release.xcconfig"; path = "Pods/Target Support Files/Pods-FMDBUpgrade/Pods-FMDBUpgrade.release.xcconfig"; sourceTree = "<group>"; };
 		4611AD663953F938D53F305C /* Pods-FMDBUpgrade.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FMDBUpgrade.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FMDBUpgrade/Pods-FMDBUpgrade.debug.xcconfig"; sourceTree = "<group>"; };
+		CE4805EA223E22AC004F48E6 /* FMDBUpgradeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FMDBUpgradeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE4805EC223E22AC004F48E6 /* FMDBUpgradeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDBUpgradeTests.m; sourceTree = "<group>"; };
+		CE4805EE223E22AC004F48E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE933A5321FAE5EA00D6BAA8 /* FMDBUpgrade.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FMDBUpgrade.podspec; sourceTree = SOURCE_ROOT; };
 		CE9B4DF621E868570039B89B /* FMDBUpgrade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FMDBUpgrade.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9B4DF921E868570039B89B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -39,10 +52,8 @@
 		CE9B4E0721E868580039B89B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE9B4E0821E868580039B89B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CE9B4E1D21E86A870039B89B /* FMDBUpgradeHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDBUpgradeHeader.h; sourceTree = "<group>"; };
-		CE9B4E1E21E86A870039B89B /* FMDatabaseUpgradeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseUpgradeHelper.h; sourceTree = "<group>"; };
 		CE9B4E1F21E86A870039B89B /* FMDatabaseQueue+Upgrade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMDatabaseQueue+Upgrade.h"; sourceTree = "<group>"; };
 		CE9B4E2021E86A870039B89B /* FMDatabase+Upgrade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMDatabase+Upgrade.m"; sourceTree = "<group>"; };
-		CE9B4E2121E86A870039B89B /* FMDatabaseUpgradeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseUpgradeHelper.m; sourceTree = "<group>"; };
 		CE9B4E2221E86A870039B89B /* FMDatabaseQueue+Upgrade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMDatabaseQueue+Upgrade.m"; sourceTree = "<group>"; };
 		CE9B4E2321E86A870039B89B /* SQLite Statements.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "SQLite Statements.md"; sourceTree = "<group>"; };
 		CE9B4E2421E86A870039B89B /* FMDatabase+Upgrade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMDatabase+Upgrade.h"; sourceTree = "<group>"; };
@@ -52,6 +63,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		CE4805E7223E22AC004F48E6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CE9B4DF321E868570039B89B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -80,10 +98,20 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CE4805EB223E22AC004F48E6 /* FMDBUpgradeTests */ = {
+			isa = PBXGroup;
+			children = (
+				CE4805EC223E22AC004F48E6 /* FMDBUpgradeTests.m */,
+				CE4805EE223E22AC004F48E6 /* Info.plist */,
+			);
+			path = FMDBUpgradeTests;
+			sourceTree = "<group>";
+		};
 		CE9B4DED21E868570039B89B = {
 			isa = PBXGroup;
 			children = (
 				CE9B4DF821E868570039B89B /* FMDBUpgrade */,
+				CE4805EB223E22AC004F48E6 /* FMDBUpgradeTests */,
 				CE9B4DF721E868570039B89B /* Products */,
 				C864567D9198BD1E8B8BAC78 /* Pods */,
 				3D18569BAE7371B3C6A4D910 /* Frameworks */,
@@ -94,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				CE9B4DF621E868570039B89B /* FMDBUpgrade.app */,
+				CE4805EA223E22AC004F48E6 /* FMDBUpgradeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -127,8 +156,6 @@
 				CE9B4E2021E86A870039B89B /* FMDatabase+Upgrade.m */,
 				CE9B4E1F21E86A870039B89B /* FMDatabaseQueue+Upgrade.h */,
 				CE9B4E2221E86A870039B89B /* FMDatabaseQueue+Upgrade.m */,
-				CE9B4E1E21E86A870039B89B /* FMDatabaseUpgradeHelper.h */,
-				CE9B4E2121E86A870039B89B /* FMDatabaseUpgradeHelper.m */,
 				CE9B4E2321E86A870039B89B /* SQLite Statements.md */,
 			);
 			path = UpgradeManager;
@@ -137,6 +164,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		CE4805E9223E22AC004F48E6 /* FMDBUpgradeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE4805F3223E22AC004F48E6 /* Build configuration list for PBXNativeTarget "FMDBUpgradeTests" */;
+			buildPhases = (
+				CE4805E6223E22AC004F48E6 /* Sources */,
+				CE4805E7223E22AC004F48E6 /* Frameworks */,
+				CE4805E8223E22AC004F48E6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CE4805F0223E22AC004F48E6 /* PBXTargetDependency */,
+			);
+			name = FMDBUpgradeTests;
+			productName = FMDBUpgradeTests;
+			productReference = CE4805EA223E22AC004F48E6 /* FMDBUpgradeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		CE9B4DF521E868570039B89B /* FMDBUpgrade */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CE9B4E0C21E868580039B89B /* Build configuration list for PBXNativeTarget "FMDBUpgrade" */;
@@ -164,6 +209,10 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = yangyongzheng;
 				TargetAttributes = {
+					CE4805E9223E22AC004F48E6 = {
+						CreatedOnToolsVersion = 10.0;
+						TestTargetID = CE9B4DF521E868570039B89B;
+					};
 					CE9B4DF521E868570039B89B = {
 						CreatedOnToolsVersion = 10.1;
 					};
@@ -183,11 +232,19 @@
 			projectRoot = "";
 			targets = (
 				CE9B4DF521E868570039B89B /* FMDBUpgrade */,
+				CE4805E9223E22AC004F48E6 /* FMDBUpgradeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CE4805E8223E22AC004F48E6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CE9B4DF421E868570039B89B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -229,6 +286,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CE4805E6223E22AC004F48E6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE4805ED223E22AC004F48E6 /* FMDBUpgradeTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CE9B4DF221E868570039B89B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -239,11 +304,18 @@
 				CE9B4E2721E86A870039B89B /* FMDatabaseQueue+Upgrade.m in Sources */,
 				CE9B4E2521E86A870039B89B /* FMDatabase+Upgrade.m in Sources */,
 				CE9B4DFB21E868570039B89B /* AppDelegate.m in Sources */,
-				CE9B4E2621E86A870039B89B /* FMDatabaseUpgradeHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CE4805F0223E22AC004F48E6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CE9B4DF521E868570039B89B /* FMDBUpgrade */;
+			targetProxy = CE4805EF223E22AC004F48E6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CE9B4DFF21E868570039B89B /* Main.storyboard */ = {
@@ -265,6 +337,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		CE4805F1223E22AC004F48E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 397W964N5J;
+				INFOPLIST_FILE = FMDBUpgradeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = yyz.uek.FMDBUpgradeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FMDBUpgrade.app/FMDBUpgrade";
+			};
+			name = Debug;
+		};
+		CE4805F2223E22AC004F48E6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 397W964N5J;
+				INFOPLIST_FILE = FMDBUpgradeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = yyz.uek.FMDBUpgradeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FMDBUpgrade.app/FMDBUpgrade";
+			};
+			name = Release;
+		};
 		CE9B4E0A21E868580039B89B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -418,6 +530,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CE4805F3223E22AC004F48E6 /* Build configuration list for PBXNativeTarget "FMDBUpgradeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE4805F1223E22AC004F48E6 /* Debug */,
+				CE4805F2223E22AC004F48E6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CE9B4DF121E868570039B89B /* Build configuration list for PBXProject "FMDBUpgrade" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

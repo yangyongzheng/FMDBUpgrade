@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param sqlStatements sql语句数组
  */
-- (void)yyz_transactionExecuteStatements:(NSArray *)sqlStatements;
+- (void)yyz_transactionExecuteStatements:(NSArray<NSString *> *)sqlStatements;
 
 /**
  添加异步并发执行任务，一般用于查询操作
