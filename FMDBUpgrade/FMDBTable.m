@@ -8,6 +8,12 @@
 
 #import "FMDBTable.h"
 
+@interface FMDBTableColumn ()
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *datatype;
+@property (nullable, nonatomic, copy) NSString *constraint;
+@end
+
 @implementation FMDBTableColumn
 
 + (instancetype)columnWithName:(NSString *)name
@@ -23,6 +29,11 @@
 @end
 
 
+
+@interface FMDBTable ()
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSArray<FMDBTableColumn *> *columns;
+@end
 
 @implementation FMDBTable
 

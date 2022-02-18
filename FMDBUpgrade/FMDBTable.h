@@ -11,9 +11,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface FMDBTableColumn : NSObject
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *datatype;
-@property (nullable, nonatomic, copy) NSString *constraint;
+@property (nonatomic, readonly, copy) NSString *name;
+@property (nonatomic, readonly, copy) NSString *datatype;
+@property (nullable, nonatomic, readonly, copy) NSString *constraint;
 
 + (instancetype)columnWithName:(NSString *)name
                       datatype:(NSString *)datatype
@@ -21,8 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface FMDBTable : NSObject
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSArray<FMDBTableColumn *> *columns;
+@property (nonatomic, readonly, copy) NSString *name;
+@property (nonatomic, readonly, copy) NSArray<FMDBTableColumn *> *columns;
 
 + (instancetype)tableWithName:(NSString *)name
                       columns:(NSArray<FMDBTableColumn *> *)columns;
