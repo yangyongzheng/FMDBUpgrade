@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "FMDatabase+Upgrade.h"
+#import "FMDatabaseQueue+Upgrade.h"
 
 @interface AppDelegate ()
 
@@ -17,6 +19,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    FMDatabase *db = [FMDatabase yyz_databaseWithName:@"test.db"];
+    [db yyz_upgradeTables:@[]];
     return YES;
 }
 

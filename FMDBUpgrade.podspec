@@ -1,22 +1,28 @@
 Pod::Spec.new do |s|
-  s.name         = "FMDBUpgrade"
-  s.version      = "1.0.2"
-  s.author       = { "yangyongzheng" => "youngyongzheng@qq.com" }
-  s.license      = "MIT"  
-  s.homepage     = "https://github.com/yangyongzheng/FMDBUpgrade"
-  s.source       = { :git => "https://github.com/yangyongzheng/FMDBUpgrade.git", :tag => "#{s.version}" }
-  s.summary      = "Upgrade database extension class based on FMDB."
-  
-  s.requires_arc = true
-  s.platform     = :ios, "8.0"
-  s.source_files  = "UpgradeManager/FMDBUpgradeHeader.h"
-  s.public_header_files = "UpgradeManager/FMDBUpgradeHeader.h"
+	s.name = 'FMDBUpgrade'
+	s.version = '1.0.3'
+	s.summary = 'Upgrade database extension class based on FMDB.'
+	s.homepage = 'https://github.com/yangyongzheng/FMDBUpgrade'
+	s.license = { :type => 'MIT', :file => 'LICENSE' }
+	s.authors = {
+		'yangyongzheng' => 'youngyongzheng@qq.com'
+	}
+	s.source = {
+		:git => 'https://github.com/yangyongzheng/FMDBUpgrade.git',
+		:tag => s.version.to_s
+	}
 
-  s.subspec "UpgradeManager" do |ss|
-    ss.source_files = "UpgradeManager/*.{h,m}"
-    ss.public_header_files = "UpgradeManager/*+Upgrade.h"
-  end
+	s.platform = :ios, '9.0'
+	s.ios.deployment_target = '9.0'
+	s.requires_arc = true
 
-  s.dependency "FMDB"
+	s.source_files = 'Source/FMDBUpgradeHeader.h'
+	s.public_header_files = 'Source/FMDBUpgradeHeader.h'
 
+	subspec 'Upgrade' do |ss|
+		ss.source_files = 'Source/*+Upgrade.?'
+		ss.public_header_files = 'Source/*+Upgrade.h'
+	end
+
+	s.dependency 'FMDB'
 end
