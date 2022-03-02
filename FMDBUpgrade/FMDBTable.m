@@ -19,10 +19,11 @@
 + (instancetype)columnWithName:(NSString *)name
                       datatype:(NSString *)datatype
                     constraint:(NSString *)constraint {
+    NSCharacterSet *characterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     FMDBTableColumn *tableColumn = [[self alloc] init];
-    tableColumn.name = name;
-    tableColumn.datatype = datatype;
-    tableColumn.constraint = constraint;
+    tableColumn.name = [name stringByTrimmingCharactersInSet:characterSet];
+    tableColumn.datatype = [datatype stringByTrimmingCharactersInSet:characterSet];
+    tableColumn.constraint = [constraint stringByTrimmingCharactersInSet:characterSet];
     return tableColumn;
 }
 
@@ -39,8 +40,9 @@
 
 + (instancetype)tableWithName:(NSString *)name
                       columns:(NSArray<FMDBTableColumn *> *)columns {
+    NSCharacterSet *characterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     FMDBTable *table = [[self alloc] init];
-    table.name = name;
+    table.name = [name stringByTrimmingCharactersInSet:characterSet];
     table.columns = columns;
     return table;
 }

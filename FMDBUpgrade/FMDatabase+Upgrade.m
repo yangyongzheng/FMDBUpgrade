@@ -25,23 +25,38 @@
 }
 
 - (void)yyz_createTable:(FMDBTable *)table {
-    
+    NSString *sql = [FMDBUpgradeHelper createTableStatementWithTable:table];
+    [self executeUpdate:sql];
 }
 
 - (void)yyz_createTables:(NSArray<FMDBTable *> *)tables {
-    
+    NSArray *sqls = [FMDBUpgradeHelper createTableStatementsWithTables:tables];
+    NSString *fullSql = [sqls componentsJoinedByString:@" "];
+    [self executeStatements:fullSql];
 }
 
 - (void)yyz_deleteTable:(FMDBTable *)table {
-    
+    NSString *sql = [FMDBUpgradeHelper dropTableStatementWithTable:table];
+    [self executeUpdate:sql];
 }
 
 - (void)yyz_deleteTables:(NSArray<FMDBTable *> *)tables {
-    
+    NSArray *sqls = [FMDBUpgradeHelper dropTableStatementsWithTables:tables];
+    NSString *fullSql = [sqls componentsJoinedByString:@" "];
+    [self executeStatements:fullSql];
 }
 
 - (void)yyz_inTransaction:(void (NS_NOESCAPE ^)(FMDatabase * _Nonnull, BOOL * _Nonnull))block {
-    
+    BOOL requiredRollback = NO;
+    // 开始事物
+    [self beginTransaction];
+    block(self, &requiredRollback);
+    // 回滚或提交事物
+    if (requiredRollback) {
+        [self rollback];
+    } else {
+        [self commit];
+    }
 }
 
 @end

@@ -11,10 +11,32 @@
 @implementation AppLogDatabase
 
 + (FMDBTable *)startTable {
+    return [self tableWithName:@"start"];
+}
+
++ (FMDBTable *)pageTable {
+    return [self tableWithName:@"page"];
+}
+
++ (FMDBTable *)eventTable {
+    return [self tableWithName:@"event"];
+}
+
++ (FMDBTable *)crashTable {
+    return [self tableWithName:@"crash"];
+}
+
++ (FMDBTable *)tableWithName:(NSString *)name {
     FMDBTableColumn *cid = [FMDBTableColumn columnWithName:@"id"
-                                                  datatype:@""
-                                                constraint:@""];
-    return [FMDBTable tableWithName:@"start" columns:@[cid]];
+                                                  datatype:@"INTEGER"
+                                                constraint:@"PRIMARY KEY AUTOINCREMENT"];
+    FMDBTableColumn *cdata = [FMDBTableColumn columnWithName:@"data"
+                                                    datatype:@"BLOB"
+                                                  constraint:@"NOT NULL"];
+    FMDBTableColumn *ctimestamp = [FMDBTableColumn columnWithName:@"createTime"
+                                                         datatype:@"INTEGER"
+                                                       constraint:@"DEFAULT(strftime('%s'))"];
+    return [FMDBTable tableWithName:name columns:@[cid, cdata, ctimestamp]];
 }
 
 @end
