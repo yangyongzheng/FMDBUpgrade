@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 升级数据库表，参考 [ALTER TABLE](https://sqlite.org/lang_altertable.html)
 /// @param tables 待升级表对象数组
+/// @discussion 表对象 FMDBTable.columns.count == 0 时会删除其对应表
 - (void)yyz_upgradeTables:(NSArray<FMDBTable *> *)tables;
 
 /// 创建单个表，参考 [CREATE TABLE](https://sqlite.org/lang_createtable.html)

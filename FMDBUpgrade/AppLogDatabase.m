@@ -39,11 +39,23 @@
     FMDBTableColumn *ctitle = [FMDBTableColumn columnWithName:@"title"
                                                      datatype:@"TEXT"
                                                    constraint:nil];
+    FMDBTableColumn *ctitle2 = [FMDBTableColumn columnWithName:@"title2"
+                                                     datatype:@"TEXT"
+                                                   constraint:nil];
+    FMDBTableColumn *ctitle3 = [FMDBTableColumn columnWithName:@"title3"
+                                                     datatype:@"TEXT"
+                                                   constraint:nil];
     FMDBTableColumn *cdetail = [FMDBTableColumn columnWithName:@"detail"
                                                       datatype:@"TEXT"
                                                     constraint:nil];
+    FMDBTableColumn *cdetail2 = [FMDBTableColumn columnWithName:@"detail2"
+                                                      datatype:@"TEXT"
+                                                    constraint:nil];
+    FMDBTableColumn *cdetail3 = [FMDBTableColumn columnWithName:@"detail3"
+                                                      datatype:@"TEXT"
+                                                    constraint:nil];
     return [FMDBTable tableWithName:name
-                            columns:@[cid, cdata, ccreateTime, cdetail]
+                            columns:@[cid, cdata, ccreateTime, cdetail, ctitle2, cdetail3]
                 shouldChangesSchema:YES];
 }
 
