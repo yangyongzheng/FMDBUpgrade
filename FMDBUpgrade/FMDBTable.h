@@ -29,9 +29,16 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FMDBTable : NSObject
 @property (nonatomic, readonly, copy) NSString *name;
 @property (nonatomic, readonly, copy) NSArray<FMDBTableColumn *> *columns;
+/// 是否需要更改表架构，默认值 NO
+@property (nonatomic, readonly) BOOL shouldChangesSchema;
 
 + (instancetype)tableWithName:(NSString *)name
                       columns:(NSArray<FMDBTableColumn *> *)columns;
+
++ (instancetype)tableWithName:(NSString *)name
+                      columns:(NSArray<FMDBTableColumn *> *)columns
+          shouldChangesSchema:(BOOL)shouldChangesSchema;
+
 @end
 
 NS_ASSUME_NONNULL_END

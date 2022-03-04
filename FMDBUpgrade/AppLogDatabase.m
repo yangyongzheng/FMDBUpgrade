@@ -33,10 +33,18 @@
     FMDBTableColumn *cdata = [FMDBTableColumn columnWithName:@"data"
                                                     datatype:@"BLOB"
                                                   constraint:@"NOT NULL"];
-    FMDBTableColumn *ctimestamp = [FMDBTableColumn columnWithName:@"createTime"
-                                                         datatype:@"INTEGER"
-                                                       constraint:@"DEFAULT(strftime('%s'))"];
-    return [FMDBTable tableWithName:name columns:@[cid, cdata, ctimestamp]];
+    FMDBTableColumn *ccreateTime = [FMDBTableColumn columnWithName:@"createTime"
+                                                          datatype:@"INTEGER"
+                                                        constraint:@"DEFAULT(strftime('%s'))"];
+    FMDBTableColumn *ctitle = [FMDBTableColumn columnWithName:@"title"
+                                                     datatype:@"TEXT"
+                                                   constraint:nil];
+    FMDBTableColumn *cdetail = [FMDBTableColumn columnWithName:@"detail"
+                                                      datatype:@"TEXT"
+                                                    constraint:nil];
+    return [FMDBTable tableWithName:name
+                            columns:@[cid, cdata, ccreateTime, cdetail]
+                shouldChangesSchema:YES];
 }
 
 @end

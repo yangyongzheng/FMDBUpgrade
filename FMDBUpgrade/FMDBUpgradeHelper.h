@@ -10,21 +10,30 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class FMDBTable;
+@class FMDBTable, FMDBTableColumn;
 
 @interface FMDBUpgradeHelper : NSObject
 
+/// 根据数据库名称获取路径
 + (nullable NSString *)databasePathWithName:(NSString *)dbName;
 
-/// 创建表SQL语句，可参考 https://sqlite.org/lang_createtable.html
-+ (nullable NSString *)createTableStatementWithTable:(FMDBTable *)table;
+/// 创建单个表SQL语句，可参考 https://sqlite.org/lang_createtable.html
++ (nullable NSString *)createTableStatementBy:(FMDBTable *)table;
 
-+ (nullable NSArray<NSString *> *)createTableStatementsWithTables:(NSArray<FMDBTable *> *)tables;
+/// 创建多个表SQL语句，可参考 https://sqlite.org/lang_createtable.html
++ (nullable NSString *)createTableStatementsBy:(NSArray<FMDBTable *> *)tables;
 
-/// 删除表SQL语句，可参考 https://sqlite.org/lang_droptable.html
-+ (nullable NSString *)dropTableStatementWithTable:(FMDBTable *)table;
+/// 删除单个表SQL语句，可参考 https://sqlite.org/lang_droptable.html
++ (nullable NSString *)dropTableStatementBy:(NSString *)tableName;
 
-+ (nullable NSArray<NSString *> *)dropTableStatementsWithTables:(NSArray<FMDBTable *> *)tables;
+/// 删除多个表SQL语句，可参考 https://sqlite.org/lang_droptable.html
++ (nullable NSString *)dropTableStatementsBy:(NSArray<NSString *> *)tableNames;
+
+/// 添加列SQL语句，可参考 https://sqlite.org/lang_altertable.html
++ (nullable NSString *)addColumnStatementBy:(NSString *)table column:(FMDBTableColumn *)column;
+
+/// 删除列SQL语句，可参考 https://sqlite.org/lang_altertable.html
++ (nullable NSString *)dropColumnStatementBy:(NSString *)table column:(NSString *)column;
 
 @end
 

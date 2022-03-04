@@ -52,7 +52,7 @@
     }
 }
 
-+ (NSString *)createTableStatementWithTable:(FMDBTable *)table {
++ (NSString *)createTableStatementBy:(FMDBTable *)table {
     if ([table isKindOfClass:[FMDBTable class]]) {/*next*/} else {
         return nil;
     }
@@ -85,27 +85,56 @@
     }
 }
 
-+ (NSArray<NSString *> *)createTableStatementsWithTables:(NSArray<FMDBTable *> *)tables {
++ (NSString *)createTableStatementsBy:(NSArray<FMDBTable *> *)tables {
     if (tables.count > 0) {/*next*/} else {
         return nil;
     }
     NSArray<FMDBTable *> *safeTables = [tables copy];
     NSMutableArray<NSString *> *statements = [NSMutableArray arrayWithCapacity:safeTables.count];
     for (FMDBTable *obj in safeTables) {
-        NSString *sql = [self createTableStatementWithTable:obj];
-        if (sql.length > 0) {
-            [statements addObject:sql];
-        }
+        NSString *sql = [self createTableStatementBy:obj];
+        if (sql) { [statements addObject:sql]; }
     }
-    return statements.count > 0 ? [statements copy] : nil;
+    return statements.count > 0 ? [statements componentsJoinedByString:@" "] : nil;
 }
 
-+ (NSString *)dropTableStatementWithTable:(FMDBTable *)table {
-    return nil;
++ (NSString *)dropTableStatementBy:(NSString *)tableName {
+    if (tableName.length > 0) {/*next*/} else {
+        return nil;
+    }
+    return [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@;", tableName];
 }
 
-+ (NSArray<NSString *> *)dropTableStatementsWithTables:(NSArray<FMDBTable *> *)tables {
-    return nil;
++ (NSString *)dropTableStatementsBy:(NSArray<NSString *> *)tableNames {
+    if (tableNames.count > 0) {/*next*/} else {
+        return nil;
+    }
+    NSArray<NSString *> *safeTableNames = [tableNames copy];
+    NSMutableArray<NSString *> *statements = [NSMutableArray arrayWithCapacity:safeTableNames.count];
+    for (NSString *name in safeTableNames) {
+        NSString *sql = [self dropTableStatementBy:name];
+        if (sql) { [statements addObject:sql]; }
+    }
+    return statements.count > 0 ? [statements componentsJoinedByString:@" "] : nil;
+}
+
++ (NSString *)addColumnStatementBy:(NSString *)table column:(FMDBTableColumn *)column {
+    if (table.length > 0 && [column isKindOfClass:[FMDBTableColumn class]] &&
+        column.name.length > 0 && column.datatype.length > 0) {/*next*/} else {
+        return nil;
+    }
+    NSString *columnDef = [NSString stringWithFormat:@"%@ %@", column.name, column.datatype];
+    if (column.constraint.length > 0) {
+        columnDef = [columnDef stringByAppendingFormat:@" %@", column.constraint];
+    }
+    return [NSString stringWithFormat:@"ALTER TABLE %@ ADD COLUMN %@;", table, columnDef];
+}
+
++ (NSString *)dropColumnStatementBy:(NSString *)table column:(NSString *)column {
+    if (table.length > 0 && column.length > 0) {/*next*/} else {
+        return nil;
+    }
+    return [NSString stringWithFormat:@"ALTER TABLE %@ DROP COLUMN %@;", table, column];
 }
 
 @end

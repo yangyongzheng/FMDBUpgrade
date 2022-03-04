@@ -16,12 +16,6 @@
     return [self databaseQueueWithPath:path];
 }
 
-- (void)yyz_upgradeTable:(FMDBTable *)table {
-    [self inDatabase:^(FMDatabase * _Nonnull db) {
-        [db yyz_upgradeTable:table];
-    }];
-}
-
 - (void)yyz_upgradeTables:(NSArray<FMDBTable *> *)tables {
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_upgradeTables:tables];
@@ -40,15 +34,15 @@
     }];
 }
 
-- (void)yyz_deleteTable:(FMDBTable *)table {
+- (void)yyz_dropTableNamed:(NSString *)tableName {
     [self inDatabase:^(FMDatabase * _Nonnull db) {
-        [db yyz_deleteTable:table];
+        [db yyz_dropTableNamed:tableName];
     }];
 }
 
-- (void)yyz_deleteTables:(NSArray<FMDBTable *> *)tables {
+- (void)yyz_dropTableNames:(NSArray<NSString *> *)tableNames {
     [self inDatabase:^(FMDatabase * _Nonnull db) {
-        [db yyz_deleteTables:tables];
+        [db yyz_dropTableNames:tableNames];
     }];
 }
 

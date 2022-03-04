@@ -22,7 +22,7 @@
     // Override point for customization after application launch.
     FMDatabase *db = [FMDatabase yyz_databaseWithName:@"test.db"];
     if ([db open]) {
-        [db yyz_createTables:@[
+        [db yyz_upgradeTables:@[
             AppLogDatabase.startTable,
             AppLogDatabase.pageTable,
             AppLogDatabase.eventTable,
