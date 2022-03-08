@@ -60,7 +60,7 @@
         return nil;
     }
     // 表字段定义部分
-    NSMutableString *columnDef = [NSMutableString string];
+    NSMutableString *columnDefs = [NSMutableString string];
     for (FMDBTableColumn *obj in table.columns) {
         NSMutableString *element = [NSMutableString string];
         if (obj.name.length > 0 && obj.datatype.length > 0) {
@@ -70,16 +70,16 @@
             }
         }
         if (element.length > 0) {
-            if (columnDef.length > 0) {
-                [columnDef appendFormat:@", %@", element];
+            if (columnDefs.length > 0) {
+                [columnDefs appendFormat:@", %@", element];
             } else {
-                [columnDef appendString:element];
+                [columnDefs appendString:element];
             }
         }
     }
     // 返回创建表SQL语句
-    if (columnDef.length > 0) {
-        return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@);", table.name, columnDef];
+    if (columnDefs.length > 0) {
+        return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@);", table.name, columnDefs];
     } else {
         return nil;
     }

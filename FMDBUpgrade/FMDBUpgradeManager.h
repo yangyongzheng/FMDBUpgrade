@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol FMDBUpgradeManager <NSObject>
 
-/// 根据数据库名称获取管理对象
+/// 根据数据库名称创建管理对象
 /// @param dbName 数据库名称
 + (instancetype)yyz_databaseWithName:(NSString *)dbName;
 

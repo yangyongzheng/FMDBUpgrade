@@ -38,7 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)tableWithName:(NSString *)name
                       columns:(NSArray<FMDBTableColumn *> *)columns
           shouldChangesSchema:(BOOL)shouldChangesSchema;
-
 @end
 
 NS_ASSUME_NONNULL_END

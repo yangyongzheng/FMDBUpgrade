@@ -27,20 +27,13 @@
     return tableColumn;
 }
 
-- (NSString *)description {
-    NSString * (^ safeString)(NSString *) = ^NSString *(NSString *value) {
-        return value.length > 0 ? value : @"";
-    };
+- (NSString *)debugDescription {
     return [NSString stringWithFormat:@"<%@: %p> %@",
             NSStringFromClass([self class]), self, @{
-        @"name": safeString(self.name),
-        @"datatype": safeString(self.datatype),
-        @"constraint": safeString(self.constraint)
+        @"name": self.name ?: @"",
+        @"datatype": self.datatype ?: @"",
+        @"constraint": self.constraint ?: @""
     }];
-}
-
-- (NSString *)debugDescription {
-    return self.description;
 }
 
 @end
@@ -71,6 +64,15 @@
     table.columns = columns;
     table.shouldChangesSchema = shouldChangesSchema;
     return table;
+}
+
+- (NSString *)debugDescription {
+    return [NSString stringWithFormat:@"<%@: %p> %@",
+            NSStringFromClass([self class]), self, @{
+        @"shouldChangesSchema": @(self.shouldChangesSchema),
+        @"name": self.name ?: @"",
+        @"columns": self.columns ?: @[]
+    }];
 }
 
 @end
