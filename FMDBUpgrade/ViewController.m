@@ -8,10 +8,12 @@
 
 #import "ViewController.h"
 #import "TwoViewController.h"
-#import "FMDBUpgradeHeader.h"
+#import "AppLogDatabase.h"
+#import "FMDatabaseQueue+Upgrade.h"
 
 @interface ViewController ()
 @property (nonatomic, strong) FMDatabaseQueue *dbQueue;
+@property (nonatomic, strong) dispatch_queue_t taskQueue;
 @end
 
 @implementation ViewController
@@ -26,16 +28,8 @@
     
     [self setRightNextItem];
     
-    NSString *dbPath = [NSString stringWithFormat:@"%@/Documents/Database/BrowseRecords.db", NSHomeDirectory()];
-    self.dbQueue = [FMDatabaseQueue yyz_databaseWithPath:dbPath];
-    
-    int64_t st = CFAbsoluteTimeGetCurrent() * 1000;
-    [self.dbQueue barrierAsyncConcurrentExecutionBlock:^{
-        [self.dbQueue yyz_upgradeTableWithConfig:@[self.pageLogsTableConfig, self.eventLogsTableConfig]];
-        
-        int64_t et = CFAbsoluteTimeGetCurrent() * 1000;
-        NSLog(@"update duration: %lld", et - st);
-    }];
+    self.dbQueue = [FMDatabaseQueue yyz_databaseWithName:@"AppLog.db"];
+    self.taskQueue = dispatch_queue_create("com.sqlite.applog.queue", DISPATCH_QUEUE_SERIAL);
 }
 
 - (void)setRightNextItem {
@@ -56,86 +50,39 @@
 }
 
 - (void)upgradeText {
-    static NSInteger count = 1;
-    if (count % 2 == 0) {
-        int64_t st = CFAbsoluteTimeGetCurrent() * 1000;
-        
-        int repeat = 0;
-        while (repeat < 2) {
-            repeat++;
-            __weak typeof(self) weakSelf = self;
-            [self.dbQueue barrierAsyncConcurrentExecutionBlock:^{
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                [strongSelf.dbQueue inTransaction:^(FMDatabase * _Nonnull db, BOOL * _Nonnull rollback) {
-                    for (int i = 0; i < 100; i++) {
-                        [db executeUpdateWithFormat:@"INSERT INTO HNWPageLogs (userId, businessId) VALUES (%@, %@)", @(1000+i).stringValue, @"标题"];
-                    }
-                }];
-                
-                int64_t et = CFAbsoluteTimeGetCurrent() * 1000;
-                NSLog(@"插入 duration: %lld->%@", et - st, [NSThread currentThread]);
-            }];
-        }
-    } else {
-        int64_t st = CFAbsoluteTimeGetCurrent() * 1000;
-        
-        for (int count = 0; count <= 10; count++) {
-            __weak typeof(self) weakSelf = self;
-            [self.dbQueue asyncConcurrentExecutionBlock:^{
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                __block int64_t primaryId = 0;
-                [strongSelf.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
-                    FMResultSet *resultSet = [db executeQuery:@"select * from HNWPageLogs ORDER BY id DESC LIMIT 10000"];
-                    while ([resultSet next]) {
-                        if (primaryId == 0) {
-                            primaryId = [resultSet longLongIntForColumn:@"id"];
-                        }
-                    }
-                }];
-                
-                int64_t et = CFAbsoluteTimeGetCurrent() * 1000;
-                NSLog(@"查询%d duration: %lld，primaryId %lld->%@", count, et - st, primaryId, [NSThread currentThread]);
-            }];
-        }
+    dispatch_async(self.taskQueue, ^{
+        [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, detail, detail2) VALUES (%@, %@, %@);",
+                                 [self dataWithDictionary:@{@"class": @1, @"age": @22}],
+                                 @"张三", @"安卓工程师"];
+            NSAssert(result, @"<1>插入失败");
+        }];
+    });
+    dispatch_async(self.taskQueue, ^{
+        [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, detail, detail2) VALUES (%@, %@, %@);",
+                                 [self dataWithDictionary:@{@"class": @2, @"age": @23}],
+                                 @"李四", @"iOS工程师"];
+            NSAssert(result, @"<2>插入失败");
+        }];
+    });
+    dispatch_async(self.taskQueue, ^{
+        [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, detail, detail2) VALUES (%@, %@, %@);",
+                                 [self dataWithDictionary:@{@"class": @3, @"age": @24}],
+                                 @"王五", @"前端工程师"];
+            NSAssert(result, @"<3>插入失败");
+        }];
+    });
+}
+
+- (NSData *)dataWithDictionary:(NSDictionary<NSString *,id> *)dictionary {
+    if ([NSJSONSerialization isValidJSONObject:dictionary]) {
+        return [NSJSONSerialization dataWithJSONObject:dictionary
+                                               options:kNilOptions
+                                                 error:nil];
     }
-    
-    count++;
-}
-
-- (NSDictionary *)pageLogsTableConfig {
-    return @{@"HNWPageLogs" : @{@"id" : @"INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL",
-                                @"userId" : @"TEXT",
-                                @"appVersion" : @"TEXT NOT NULL DEFAULT('unknown')",
-                                @"deviceId" : @"TEXT NOT NULL DEFAULT('unknown')",
-                                @"channel" : @"TEXT NOT NULL DEFAULT('App Store')",
-                                @"createTime" : @"INTEGER NOT NULL DEFAULT(strftime('%s', 'now'))",
-                                @"updateTime" : @"INTEGER NOT NULL DEFAULT(strftime('%s', 'now'))",
-                                @"jsonData" : @"BLOB",
-                                @"businessId" : @"TEXT",
-                                },
-             @"HNWCrashLogs" : @{@"id" : @"INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL",
-                                 @"userId" : @"TEXT",
-                                 @"appVersion" : @"TEXT NOT NULL DEFAULT('unknown')",
-                                 @"deviceId" : @"TEXT NOT NULL DEFAULT('unknown')",
-                                 @"channel" : @"TEXT NOT NULL DEFAULT('App Store')",
-                                 @"createTime" : @"INTEGER NOT NULL DEFAULT(strftime('%s', 'now'))",
-                                 @"updateTime" : @"INTEGER NOT NULL DEFAULT(strftime('%s', 'now'))",
-                                 @"data" : @"BLOB",
-                                 },
-             };
-}
-
-- (NSDictionary *)eventLogsTableConfig {
-    return @{@"HNWEventLogs" : @{@"id" : @"INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL",
-                                 @"userId" : @"TEXT",
-                                 @"appVersion" : @"TEXT NOT NULL DEFAULT('unknown')",
-                                 @"deviceId" : @"TEXT NOT NULL DEFAULT('unknown')",
-                                 @"channel" : @"TEXT NOT NULL DEFAULT('App Store')",
-                                 @"createTime" : @"INTEGER NOT NULL DEFAULT(strftime('%s', 'now'))",
-                                 @"updateTime" : @"INTEGER NOT NULL DEFAULT(strftime('%s', 'now'))",
-                                 @"data" : @"BLOB",
-                                 },
-             };
+    return nil;
 }
 
 @end
