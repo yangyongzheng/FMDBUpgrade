@@ -20,7 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    FMDatabase *db = [FMDatabase yyz_databaseWithName:@"test.db"];
+    FMDatabase *db = [FMDatabase yyz_databaseWithName:@"AppLog.db"];
     if ([db open]) {
         [db yyz_upgradeTables:@[
             AppLogDatabase.startTable,

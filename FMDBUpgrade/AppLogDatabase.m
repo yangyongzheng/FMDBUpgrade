@@ -37,7 +37,7 @@
     
     FMDBTableColumn *ccreateTime = [FMDBTableColumn columnWithName:@"createTime"
                                                           datatype:@"INTEGER"
-                                                        constraint:@"DEFAULT(strftime('%s'))"];
+                                                        constraint:@"DEFAULT(strftime('%s','now'))"];
 #if 1
     FMDBTableColumn *ctitle = [FMDBTableColumn columnWithName:@"title"
                                                      datatype:@"TEXT"
@@ -63,9 +63,7 @@
                                                      datatype:@"TEXT"
                                                    constraint:nil];
 #endif
-    return [FMDBTable tableWithName:name
-                            columns:@[cid, cdata, ccreateTime, ctitle, ctitle2, ctitle3]
-                shouldChangesSchema:YES];
+    return [FMDBTable tableWithName:name columns:@[cid, cdata, ccreateTime, ctitle, ctitle2, ctitle3]];
 }
 
 @end
