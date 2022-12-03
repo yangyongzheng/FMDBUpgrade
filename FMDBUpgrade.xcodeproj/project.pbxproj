@@ -45,7 +45,6 @@
 		6F52113727D85BB900415F69 /* FMDatabaseQueue+Upgrade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMDatabaseQueue+Upgrade.h"; sourceTree = "<group>"; };
 		6F52113827D85BB900415F69 /* FMDatabase+Upgrade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMDatabase+Upgrade.m"; sourceTree = "<group>"; };
 		6F52113927D85BB900415F69 /* FMDBTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDBTable.h; sourceTree = "<group>"; };
-		6F52113A27D85BB900415F69 /* FMDBUpgradeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDBUpgradeManager.h; sourceTree = "<group>"; };
 		6F52113B27D85BB900415F69 /* FMDatabaseQueue+Upgrade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMDatabaseQueue+Upgrade.m"; sourceTree = "<group>"; };
 		6F52113C27D85BB900415F69 /* FMDatabase+Upgrade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMDatabase+Upgrade.h"; path = "Source/Public/FMDatabase+Upgrade.h"; sourceTree = SOURCE_ROOT; };
 		6F52113E27D85BB900415F69 /* FMDBUpgradeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDBUpgradeHelper.h; sourceTree = "<group>"; };
@@ -118,7 +117,6 @@
 				6F52113B27D85BB900415F69 /* FMDatabaseQueue+Upgrade.m */,
 				6F52113927D85BB900415F69 /* FMDBTable.h */,
 				6F52113627D85BB900415F69 /* FMDBTable.m */,
-				6F52113A27D85BB900415F69 /* FMDBUpgradeManager.h */,
 			);
 			name = Public;
 			path = Source/Public;
@@ -242,7 +240,7 @@
 		CE9B4DEE21E868570039B89B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1410;
 				ORGANIZATIONNAME = yangyongzheng;
 				TargetAttributes = {
 					CE4805E9223E22AC004F48E6 = {
@@ -418,16 +416,17 @@
 			baseConfigurationReference = 446961ACD40AA53163CF6511 /* Pods-FMDBUpgradeTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 397W964N5J;
+				DEVELOPMENT_TEAM = MYLHBGJFAY;
 				INFOPLIST_FILE = FMDBUpgradeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = yyz.uek.FMDBUpgradeTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yyz.FMDBUpgradeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FMDBUpgrade.app/FMDBUpgrade";
@@ -439,16 +438,17 @@
 			baseConfigurationReference = C0922BEE7CDDAAA97E52A83A /* Pods-FMDBUpgradeTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 397W964N5J;
+				DEVELOPMENT_TEAM = MYLHBGJFAY;
 				INFOPLIST_FILE = FMDBUpgradeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = yyz.uek.FMDBUpgradeTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yyz.FMDBUpgradeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FMDBUpgrade.app/FMDBUpgrade";
@@ -582,7 +582,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oc.FMDBUpgrade;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yyz.FMDBUpgrade;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -603,7 +603,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.oc.FMDBUpgrade;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yyz.FMDBUpgrade;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

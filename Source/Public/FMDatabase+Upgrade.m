@@ -8,43 +8,31 @@
 
 #import "FMDatabase+Upgrade.h"
 #import "FMDBUpgradeHelper.h"
+#import "FMDBTable.h"
 
 @implementation FMDatabase (Upgrade)
 
+// MARK: Public
+
 + (instancetype)yyz_databaseWithName:(NSString *)dbName {
-    NSAssert(dbName.length > 0, @"Invalid parameter not satisfying: dbName");
+    FMDBParameterAssert(dbName.length > 0, dbName);
     
     NSString *path = [FMDBUpgradeHelper databasePathWithName:dbName];
     return [self databaseWithPath:path];
 }
 
 - (void)yyz_upgradeTables:(NSArray<FMDBTable *> *)tables {
-    if (tables.count > 0) {/*next*/} else {
-        return;
-    }
+    if (tables.count > 0) {/*next*/} else { return; }
     NSArray<FMDBTable *> *safeTables = [tables copy];
     for (FMDBTable *obj in safeTables) {
-        NSAssert(obj.name.length > 0, @"Invalid parameter not satisfying: tables");
-        if (obj.name.length > 0) {
-            if ([self tableExists:obj.name]) {
-                if (obj.columns.count > 0) {
-                    NSString *sqls = [self yyz_upgradeStatementsWithTable:obj];
-                    if (sqls.length > 0) {
-                        const BOOL result = [self executeStatements:sqls];
-                        NSAssert(result, @"Upgrade failed: %@", sqls);
-                    }
-                } else {
-                    [self yyz_dropTableNamed:obj.name];
-                }
-            } else {
-                [self yyz_createTable:obj];
-            }
-        }
+        FMDBParameterAssert(obj.name.length > 0, tables);
+        
+        [self yyz_upgradeTable:obj];
     }
 }
 
 - (void)yyz_createTable:(FMDBTable *)table {
-    NSAssert(table.name.length > 0 && table.columns.count > 0, @"Invalid parameter not satisfying: table");
+    FMDBParameterAssert(table.name.length > 0 && table.columns.count > 0, table);
     
     NSString *sql = [FMDBUpgradeHelper createTableStatementBy:table];
     if (sql) { [self executeUpdate:sql]; }
@@ -56,7 +44,7 @@
 }
 
 - (void)yyz_dropTableNamed:(NSString *)tableName {
-    NSAssert(tableName.length > 0, @"Invalid parameter not satisfying: tableName");
+    FMDBParameterAssert(tableName.length > 0, tableName);
     
     NSString *sql = [FMDBUpgradeHelper dropTableStatementBy:tableName];
     if (sql) { [self executeUpdate:sql]; }
@@ -68,13 +56,13 @@
 }
 
 - (void)yyz_inTransaction:(void (NS_NOESCAPE ^)(FMDatabase * _Nonnull, BOOL * _Nonnull))block {
-    NSAssert(block, @"Invalid parameter not satisfying: block");
+    FMDBParameterAssert(block != nil, block);
     
+    // 开始事务
     BOOL requiredRollback = NO;
-    // 开始事物
     [self beginTransaction];
     block(self, &requiredRollback);
-    // 回滚或提交事物
+    // 事务提交或回滚
     if (requiredRollback) {
         [self rollback];
     } else {
@@ -83,6 +71,25 @@
 }
 
 // MARK: - Private
+
+/// 升级单个表
+- (void)yyz_upgradeTable:(FMDBTable *)table {
+    if (table.name.length > 0) {/*next*/} else { return; }
+    if ([self tableExists:table.name]) {
+        if (table.columns.count > 0) {
+            NSString *sqls = [self yyz_upgradeStatementsWithTable:table];
+            if (sqls.length > 0) {
+                const BOOL result = [self executeStatements:sqls];
+                NSAssert(result, @"Upgrade failed: %@", sqls);
+            }
+        } else {
+            [self yyz_dropTableNamed:table.name];
+        }
+    } else {
+        [self yyz_createTable:table];
+    }
+}
+
 /// 数据库表升级（调用者已判断 表名、表列 均非空），参考 https://sqlite.org/lang_altertable.html
 - (NSString *)yyz_upgradeStatementsWithTable:(FMDBTable *)table {
     // 新表列及其定义映射

@@ -7,7 +7,9 @@
 //
 
 #import "FMDatabaseQueue+Upgrade.h"
+#import "FMDatabase+Upgrade.h"
 #import "FMDBUpgradeHelper.h"
+#import "FMDBTable.h"
 
 @implementation FMDatabaseQueue (Upgrade)
 
@@ -65,12 +67,6 @@
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_dropTableNames:tableNames];
     }];
-}
-
-- (void)yyz_inTransaction:(void (NS_NOESCAPE ^)(FMDatabase * _Nonnull, BOOL * _Nonnull))block {
-    NSAssert(block, @"Invalid parameter not satisfying: block");
-    
-    [self inTransaction:block];
 }
 
 @end
