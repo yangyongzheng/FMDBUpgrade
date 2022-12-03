@@ -27,6 +27,10 @@
     return tableColumn;
 }
 
+- (BOOL)isValidObject {
+    return self.name.length > 0 && self.datatype.length > 0;
+}
+
 - (NSString *)debugDescription {
     return [NSString stringWithFormat:@"<%@: %p> %@",
             NSStringFromClass([self class]), self, @{

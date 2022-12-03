@@ -63,7 +63,7 @@
     NSMutableString *columnDefs = [NSMutableString string];
     for (FMDBTableColumn *obj in table.columns) {
         NSMutableString *element = [NSMutableString string];
-        if (obj.name.length > 0 && obj.datatype.length > 0) {
+        if (obj.isValidObject) {
             [element appendFormat:@"%@ %@", obj.name, obj.datatype];
             if (obj.constraint.length > 0) {
                 [element appendFormat:@" %@", obj.constraint];
@@ -120,12 +120,12 @@
 
 + (NSString *)addColumnStatementBy:(NSString *)table column:(FMDBTableColumn *)column {
     if (table.length > 0 && [column isKindOfClass:[FMDBTableColumn class]] &&
-        column.name.length > 0 && column.datatype.length > 0) {/*next*/} else {
+        column.isValidObject) {/*next*/} else {
         return nil;
     }
-    NSString *columnDef = [NSString stringWithFormat:@"%@ %@", column.name, column.datatype];
+    NSMutableString *columnDef = [NSMutableString stringWithFormat:@"%@ %@", column.name, column.datatype];
     if (column.constraint.length > 0) {
-        columnDef = [columnDef stringByAppendingFormat:@" %@", column.constraint];
+        [columnDef appendFormat:@" %@", column.constraint];
     }
     return [NSString stringWithFormat:@"ALTER TABLE %@ ADD COLUMN %@;", table, columnDef];
 }
