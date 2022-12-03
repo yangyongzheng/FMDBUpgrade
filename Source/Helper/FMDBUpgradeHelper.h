@@ -11,7 +11,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 #ifndef FMDBParameterAssert
-#define FMDBParameterAssert(condition, desc) NSAssert((condition), @"Invalid parameter not satisfying: %@", @#desc)
+#define FMDBParameterAssert(condition, desc)    \
+    NSAssert((condition), @"Invalid parameter not satisfying: %@", @#desc)
 #endif
 
 @class FMDBTable, FMDBTableColumn;

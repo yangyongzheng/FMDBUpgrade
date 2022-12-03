@@ -1,22 +1,21 @@
 //
-//  ViewController.m
+//  FMDBRootViewController.m
 //  FMDBUpgrade
 //
 //  Created by yangyongzheng on 2019/1/11.
 //  Copyright © 2019 yangyongzheng. All rights reserved.
 //
 
-#import "ViewController.h"
-#import "TwoViewController.h"
+#import "FMDBRootViewController.h"
 #import "AppLogDatabase.h"
 #import "FMDatabaseQueue+Upgrade.h"
 
-@interface ViewController ()
+@interface FMDBRootViewController ()
 @property (nonatomic, strong) FMDatabaseQueue *dbQueue;
 @property (nonatomic, strong) dispatch_queue_t taskQueue;
 @end
 
-@implementation ViewController
+@implementation FMDBRootViewController
 
 - (void)dealloc {
     NSLog(@"%s", __func__);
@@ -32,6 +31,14 @@
     self.taskQueue = dispatch_queue_create("com.sqlite.applog.queue", DISPATCH_QUEUE_SERIAL);
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    if (@available(iOS 13.0, *)) {
+        return UIStatusBarStyleDarkContent;
+    } else {
+        return UIStatusBarStyleDefault;
+    }
+}
+
 - (void)setRightNextItem {
     UIBarButtonItem *nextItem = [[UIBarButtonItem alloc] initWithTitle:@"Next"
                                                                  style:UIBarButtonItemStylePlain
@@ -41,8 +48,7 @@
 }
 
 - (void)nextActionItem:(UIBarButtonItem *)item {
-    TwoViewController *controller = TwoViewController.twoViewController;
-    [self.navigationController pushViewController:controller animated:YES];
+    
 }
 
 - (IBAction)upgradeButtonAction:(UIButton *)sender {
@@ -52,25 +58,22 @@
 - (void)upgradeText {
     dispatch_async(self.taskQueue, ^{
         [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
-            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, detail, detail2) VALUES (%@, %@, %@);",
-                                 [self dataWithDictionary:@{@"class": @1, @"age": @22}],
-                                 @"张三", @"安卓工程师"];
+            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, title) VALUES (%@, %@);",
+                                 [self dataWithDictionary:@{@"class": @1, @"age": @22}], @"张三"];
             NSAssert(result, @"<1>插入失败");
         }];
     });
     dispatch_async(self.taskQueue, ^{
         [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
-            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, detail, detail2) VALUES (%@, %@, %@);",
-                                 [self dataWithDictionary:@{@"class": @2, @"age": @23}],
-                                 @"李四", @"iOS工程师"];
+            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, title) VALUES (%@, %@);",
+                                 [self dataWithDictionary:@{@"class": @2, @"age": @23}], @"李四"];
             NSAssert(result, @"<2>插入失败");
         }];
     });
     dispatch_async(self.taskQueue, ^{
         [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
-            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, detail, detail2) VALUES (%@, %@, %@);",
-                                 [self dataWithDictionary:@{@"class": @3, @"age": @24}],
-                                 @"王五", @"前端工程师"];
+            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, title) VALUES (%@, %@);",
+                                 [self dataWithDictionary:@{@"class": @3, @"age": @24}], @"王五"];
             NSAssert(result, @"<3>插入失败");
         }];
     });

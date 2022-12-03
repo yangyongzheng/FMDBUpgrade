@@ -13,15 +13,15 @@
 		6F52114227D85BB900415F69 /* FMDatabaseQueue+Upgrade.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F52113B27D85BB900415F69 /* FMDatabaseQueue+Upgrade.m */; };
 		6F52114327D85BB900415F69 /* FMDBUpgradeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F52113F27D85BB900415F69 /* FMDBUpgradeHelper.m */; };
 		BE2FEC48FDC81D38A5234FFD /* Pods_FMDBUpgradeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED8E053D2840C5B8C70120EF /* Pods_FMDBUpgradeTests.framework */; };
+		CE075E5B293BA0E50097C86C /* FMDBNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE075E5A293BA0E50097C86C /* FMDBNavigationController.m */; };
 		CE4805ED223E22AC004F48E6 /* FMDBUpgradeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4805EC223E22AC004F48E6 /* FMDBUpgradeTests.m */; };
 		CE933A5421FAE5EA00D6BAA8 /* FMDBUpgrade.podspec in Resources */ = {isa = PBXBuildFile; fileRef = CE933A5321FAE5EA00D6BAA8 /* FMDBUpgrade.podspec */; };
 		CE9B4DFB21E868570039B89B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4DFA21E868570039B89B /* AppDelegate.m */; };
-		CE9B4DFE21E868570039B89B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4DFD21E868570039B89B /* ViewController.m */; };
+		CE9B4DFE21E868570039B89B /* FMDBRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4DFD21E868570039B89B /* FMDBRootViewController.m */; };
 		CE9B4E0121E868570039B89B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE9B4DFF21E868570039B89B /* Main.storyboard */; };
 		CE9B4E0321E868580039B89B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE9B4E0221E868580039B89B /* Assets.xcassets */; };
 		CE9B4E0621E868580039B89B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE9B4E0421E868580039B89B /* LaunchScreen.storyboard */; };
 		CE9B4E0921E868580039B89B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4E0821E868580039B89B /* main.m */; };
-		CE9B4E2B21E86C730039B89B /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9B4E2A21E86C730039B89B /* TwoViewController.m */; };
 		EFB7949962A0D0F340953CD2 /* Pods_FMDBUpgrade.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3295BBCC35B483538A3215C /* Pods_FMDBUpgrade.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +50,8 @@
 		6F52113E27D85BB900415F69 /* FMDBUpgradeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDBUpgradeHelper.h; sourceTree = "<group>"; };
 		6F52113F27D85BB900415F69 /* FMDBUpgradeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDBUpgradeHelper.m; sourceTree = "<group>"; };
 		C0922BEE7CDDAAA97E52A83A /* Pods-FMDBUpgradeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FMDBUpgradeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FMDBUpgradeTests/Pods-FMDBUpgradeTests.release.xcconfig"; sourceTree = "<group>"; };
+		CE075E59293BA0E50097C86C /* FMDBNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMDBNavigationController.h; sourceTree = "<group>"; };
+		CE075E5A293BA0E50097C86C /* FMDBNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDBNavigationController.m; sourceTree = "<group>"; };
 		CE4805EA223E22AC004F48E6 /* FMDBUpgradeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FMDBUpgradeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4805EC223E22AC004F48E6 /* FMDBUpgradeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDBUpgradeTests.m; sourceTree = "<group>"; };
 		CE4805EE223E22AC004F48E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -57,15 +59,13 @@
 		CE9B4DF621E868570039B89B /* FMDBUpgrade.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FMDBUpgrade.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9B4DF921E868570039B89B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CE9B4DFA21E868570039B89B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		CE9B4DFC21E868570039B89B /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		CE9B4DFD21E868570039B89B /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		CE9B4DFC21E868570039B89B /* FMDBRootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FMDBRootViewController.h; sourceTree = "<group>"; };
+		CE9B4DFD21E868570039B89B /* FMDBRootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMDBRootViewController.m; sourceTree = "<group>"; };
 		CE9B4E0021E868570039B89B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE9B4E0221E868580039B89B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE9B4E0521E868580039B89B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE9B4E0721E868580039B89B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE9B4E0821E868580039B89B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		CE9B4E2921E86C730039B89B /* TwoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TwoViewController.h; sourceTree = "<group>"; };
-		CE9B4E2A21E86C730039B89B /* TwoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwoViewController.m; sourceTree = "<group>"; };
 		E3295BBCC35B483538A3215C /* Pods_FMDBUpgrade.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FMDBUpgrade.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED8E053D2840C5B8C70120EF /* Pods_FMDBUpgradeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FMDBUpgradeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -177,10 +177,10 @@
 				6F52113427D85BB900415F69 /* Source */,
 				CE9B4DF921E868570039B89B /* AppDelegate.h */,
 				CE9B4DFA21E868570039B89B /* AppDelegate.m */,
-				CE9B4DFC21E868570039B89B /* ViewController.h */,
-				CE9B4DFD21E868570039B89B /* ViewController.m */,
-				CE9B4E2921E86C730039B89B /* TwoViewController.h */,
-				CE9B4E2A21E86C730039B89B /* TwoViewController.m */,
+				CE075E59293BA0E50097C86C /* FMDBNavigationController.h */,
+				CE075E5A293BA0E50097C86C /* FMDBNavigationController.m */,
+				CE9B4DFC21E868570039B89B /* FMDBRootViewController.h */,
+				CE9B4DFD21E868570039B89B /* FMDBRootViewController.m */,
 				6F4D24D027BF736A009C61FF /* AppLogDatabase.h */,
 				6F4D24D127BF736A009C61FF /* AppLogDatabase.m */,
 				CE9B4DFF21E868570039B89B /* Main.storyboard */,
@@ -370,14 +370,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F52114127D85BB900415F69 /* FMDatabase+Upgrade.m in Sources */,
-				CE9B4E2B21E86C730039B89B /* TwoViewController.m in Sources */,
-				CE9B4DFE21E868570039B89B /* ViewController.m in Sources */,
+				CE9B4DFE21E868570039B89B /* FMDBRootViewController.m in Sources */,
 				CE9B4E0921E868580039B89B /* main.m in Sources */,
 				6F52114327D85BB900415F69 /* FMDBUpgradeHelper.m in Sources */,
 				6F52114227D85BB900415F69 /* FMDatabaseQueue+Upgrade.m in Sources */,
 				CE9B4DFB21E868570039B89B /* AppDelegate.m in Sources */,
 				6F4D24D227BF736A009C61FF /* AppLogDatabase.m in Sources */,
 				6F52114027D85BB900415F69 /* FMDBTable.m in Sources */,
+				CE075E5B293BA0E50097C86C /* FMDBNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

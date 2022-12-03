@@ -38,32 +38,12 @@
     FMDBTableColumn *ccreateTime = [FMDBTableColumn columnWithName:@"createTime"
                                                           datatype:@"INTEGER"
                                                         constraint:@"DEFAULT(strftime('%s','now'))"];
-#if 1
+    
     FMDBTableColumn *ctitle = [FMDBTableColumn columnWithName:@"title"
                                                      datatype:@"TEXT"
                                                    constraint:nil];
     
-    FMDBTableColumn *ctitle2 = [FMDBTableColumn columnWithName:@"title2"
-                                                     datatype:@"TEXT"
-                                                   constraint:nil];
-    
-    FMDBTableColumn *ctitle3 = [FMDBTableColumn columnWithName:@"title3"
-                                                     datatype:@"TEXT"
-                                                   constraint:nil];
-#else
-    FMDBTableColumn *ctitle = [FMDBTableColumn columnWithName:@"detail"
-                                                     datatype:@"TEXT"
-                                                   constraint:nil];
-    
-    FMDBTableColumn *ctitle2 = [FMDBTableColumn columnWithName:@"detail2"
-                                                     datatype:@"TEXT"
-                                                   constraint:nil];
-    
-    FMDBTableColumn *ctitle3 = [FMDBTableColumn columnWithName:@"detail3"
-                                                     datatype:@"TEXT"
-                                                   constraint:nil];
-#endif
-    return [FMDBTable tableWithName:name columns:@[cid, cdata, ccreateTime, ctitle, ctitle2, ctitle3]];
+    return [FMDBTable tableWithName:name columns:@[cid, cdata, ccreateTime, ctitle]];
 }
 
 @end

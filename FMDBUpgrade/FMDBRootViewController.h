@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  FMDBRootViewController.h
 //  FMDBUpgrade
 //
 //  Created by yangyongzheng on 2019/1/11.
@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface FMDBRootViewController : UIViewController
 
 @end
 
