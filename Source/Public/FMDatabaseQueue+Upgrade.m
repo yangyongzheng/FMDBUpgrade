@@ -14,23 +14,21 @@
 @implementation FMDatabaseQueue (Upgrade)
 
 + (instancetype)yyz_databaseWithName:(NSString *)dbName {
-    NSAssert(dbName.length > 0, @"Invalid parameter not satisfying: dbName");
+    FMDBParameterAssert(dbName.length > 0, dbName);
     
     NSString *path = [FMDBUpgradeHelper databasePathWithName:dbName];
     return [self databaseQueueWithPath:path];
 }
 
 - (void)yyz_upgradeTables:(NSArray<FMDBTable *> *)tables {
-    if (tables.count > 0) {/*next*/} else {
-        return;
-    }
+    if (tables.count > 0) {/*next*/} else { return; }
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_upgradeTables:tables];
     }];
 }
 
 - (void)yyz_createTable:(FMDBTable *)table {
-    NSAssert(table.name.length > 0 && table.columns.count > 0, @"Invalid parameter not satisfying: table");
+    FMDBParameterAssert(table.name.length > 0 && table.columns.count > 0, table);
     
     if (table.name.length > 0 && table.columns.count > 0) {/*next*/} else {
         return;
@@ -41,29 +39,23 @@
 }
 
 - (void)yyz_createTables:(NSArray<FMDBTable *> *)tables {
-    if (tables.count > 0) {/*next*/} else {
-        return;
-    }
+    if (tables.count > 0) {/*next*/} else { return; }
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_createTables:tables];
     }];
 }
 
 - (void)yyz_dropTableNamed:(NSString *)tableName {
-    NSAssert(tableName.length > 0, @"Invalid parameter not satisfying: tableName");
+    FMDBParameterAssert(tableName.length > 0, tableName);
     
-    if (tableName.length > 0) {/*next*/} else {
-        return;
-    }
+    if (tableName.length > 0) {/*next*/} else { return; }
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_dropTableNamed:tableName];
     }];
 }
 
 - (void)yyz_dropTableNames:(NSArray<NSString *> *)tableNames {
-    if (tableNames.count > 0) {/*next*/} else {
-        return;
-    }
+    if (tableNames.count > 0) {/*next*/} else { return; }
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_dropTableNames:tableNames];
     }];

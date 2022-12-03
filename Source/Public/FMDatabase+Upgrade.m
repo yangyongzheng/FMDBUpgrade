@@ -95,14 +95,13 @@
     // 新表列及其定义映射
     NSMutableDictionary<NSString *,FMDBTableColumn *> *toColumnDictionary = [NSMutableDictionary dictionary];
     for (FMDBTableColumn *obj in table.columns) {
-        NSAssert(obj.name.length > 0 && obj.datatype.length > 0, @"Invalid parameter not satisfying: table.columns");
-        if (obj.name.length > 0 && obj.datatype.length > 0) {
-            toColumnDictionary[obj.name] = obj;
-        }
+        FMDBParameterAssert(obj.isValidObject, table.columns);
+        if (obj.isValidObject) { toColumnDictionary[obj.name] = obj; }
     }
     // 旧表列和新表列集合
     NSSet<NSString *> *fromColumnSet = [self yyz_columnSetInTable:table.name];
     NSSet<NSString *> *toColumnSet = [NSSet setWithArray:toColumnDictionary.allKeys];
+    
     /// 删除旧表，创建新表
     NSString * (^ dropThenCreateTable)(void) = ^NSString *{
         NSMutableArray<NSString *> *statements = [NSMutableArray array];
@@ -115,6 +114,7 @@
         
         return statements.count > 0 ? [statements componentsJoinedByString:@" "] : nil;
     };
+    
     /// 仅新增列
     NSString * (^ onlyAddColumns)(void) = ^NSString *{
         NSMutableArray<NSString *> *statements = [NSMutableArray array];
@@ -125,6 +125,7 @@
         }
         return statements.count > 0 ? [statements componentsJoinedByString:@" "] : nil;
     };
+    
     /// 删除多余列，添加新增列
     NSString * (^ dropThenAddColumns)(void) = ^NSString *{
         NSMutableArray<NSString *> *statements = [NSMutableArray array];
@@ -143,8 +144,9 @@
         
         return statements.count > 0 ? [statements componentsJoinedByString:@" "] : nil;
     };
+    
     /// 表架构设计变化时
-    NSString *(^ changesTableSchema)(void) = ^NSString *{
+    NSString * (^ changesTableSchema)(void) = ^NSString *{
         NSMutableArray<NSString *> *statements = [NSMutableArray array];
         // 1) Create new table
         FMDBTable *tmpTable = [FMDBTable tableWithName:[NSString stringWithFormat:@"com_upgrade_tmp_%@", table.name]
