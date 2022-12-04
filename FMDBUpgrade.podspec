@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
 	s.license = { :type => 'MIT', :file => 'LICENSE' }
 	s.authors = {
 		'yangyongzheng' => 'youngyongzheng@qq.com',
-		'yangyongzheng' => 'yyzsvip@qq.com'
+		'yangyongzheng' => 'yyzmvip@qq.com'
 	}
 	s.source = {
 		:git => 'https://github.com/yangyongzheng/FMDBUpgrade.git',
