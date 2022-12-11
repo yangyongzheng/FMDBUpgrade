@@ -5,8 +5,7 @@ Pod::Spec.new do |s|
 	s.homepage = 'https://github.com/yangyongzheng/FMDBUpgrade'
 	s.license = { :type => 'MIT', :file => 'LICENSE' }
 	s.authors = {
-		'yangyongzheng' => 'youngyongzheng@qq.com',
-		'yangyongzheng' => 'yyzmvip@qq.com'
+        'yangyongzheng' => 'yyzmvip@qq.com'
 	}
 	s.source = {
 		:git => 'https://github.com/yangyongzheng/FMDBUpgrade.git',
