@@ -573,15 +573,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.0.0;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MYLHBGJFAY;
 				INFOPLIST_FILE = FMDBUpgrade/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FMDBUpgrade;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yyz.FMDBUpgrade;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -594,15 +595,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.0.0;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MYLHBGJFAY;
 				INFOPLIST_FILE = FMDBUpgrade/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FMDBUpgrade;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yyz.FMDBUpgrade;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

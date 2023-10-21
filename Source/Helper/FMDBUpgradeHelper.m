@@ -9,42 +9,45 @@
 #import "FMDBUpgradeHelper.h"
 #import "FMDBTable.h"
 
+NSString *FMDBSafeString(id value) {
+    NSString *result = nil;
+    if (value && [value isKindOfClass:[NSString class]]) {
+        result = [value stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+    }
+    return result ?: @"";
+}
+
+
 @implementation FMDBUpgradeHelper
 
 + (NSString *)databasePathWithName:(NSString *)dbName {
-    if (dbName.length > 0) {/*next*/} else {
+    NSString *validName = FMDBSafeString(dbName);
+    FMDBGuard(validName.length > 0) else {
         return nil;
     }
-    NSString *validName = [dbName copy];
     // 确认是否有文件扩展，没有时添加默认扩展
-    if (validName.pathExtension.length > 0) {/*next*/} else {
+    FMDBGuard(validName.pathExtension.length > 0) else {
         validName = [validName stringByAppendingPathExtension:@"db"];
     }
-    // 二次确认是否有文件扩展
-    if (validName.pathExtension.length > 0) {/*next*/} else {
-        return nil;
-    }
-    NSString *fullpath = [self fullPathWithSubpath:validName];
-    NSString *dirpath = [fullpath stringByDeletingLastPathComponent];
+    NSString *fullPath = [self fullPathWithSubpath:validName];
+    NSString *dirPath = [fullPath stringByDeletingLastPathComponent];
     BOOL isDir = NO;
     NSFileManager *fm = [NSFileManager defaultManager];
-    if ([fm fileExistsAtPath:dirpath isDirectory:&isDir] && isDir) {/*next*/} else {
-        [fm createDirectoryAtPath:dirpath
+    FMDBGuard([fm fileExistsAtPath:dirPath isDirectory:&isDir] && isDir) else {
+        [fm createDirectoryAtPath:dirPath
       withIntermediateDirectories:YES
                        attributes:nil
                             error:nil];
     }
-    return fullpath;
+    return fullPath;
 }
 
 + (NSString *)fullPathWithSubpath:(NSString *)subpath {
     NSString *safeSubpath = @"com.sqlite.database.default";
-    if (subpath.length > 0) {
+    if (subpath && subpath.length > 0) {
         safeSubpath = [safeSubpath stringByAppendingPathComponent:subpath];
     }
-    NSString *dirPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                            NSUserDomainMask,
-                                                            YES).firstObject;
+    NSString *dirPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
     if ([dirPath hasSuffix:@"/"]) {
         return [dirPath stringByAppendingString:safeSubpath];
     } else {
@@ -53,10 +56,8 @@
 }
 
 + (NSString *)createTableStatementBy:(FMDBTable *)table {
-    if ([table isKindOfClass:[FMDBTable class]]) {/*next*/} else {
-        return nil;
-    }
-    if (table.name.length > 0 && table.columns.count > 0) {/*next*/} else {
+    FMDBGuard(table && [table isKindOfClass:[FMDBTable class]] &&
+              table.name.length > 0 && table.columns.count > 0) else {
         return nil;
     }
     // 表字段定义部分
@@ -86,7 +87,7 @@
 }
 
 + (NSString *)createTableStatementsBy:(NSArray<FMDBTable *> *)tables {
-    if (tables.count > 0) {/*next*/} else {
+    FMDBGuard(tables && tables.count > 0) else {
         return nil;
     }
     NSArray<FMDBTable *> *safeTables = [tables copy];
@@ -99,14 +100,15 @@
 }
 
 + (NSString *)dropTableStatementBy:(NSString *)tableName {
-    if (tableName.length > 0) {/*next*/} else {
+    NSString *safeTableName = FMDBSafeString(tableName);
+    FMDBGuard(safeTableName.length > 0) else {
         return nil;
     }
-    return [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@;", tableName];
+    return [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@;", safeTableName];
 }
 
 + (NSString *)dropTableStatementsBy:(NSArray<NSString *> *)tableNames {
-    if (tableNames.count > 0) {/*next*/} else {
+    FMDBGuard(tableNames && tableNames.count > 0) else {
         return nil;
     }
     NSArray<NSString *> *safeTableNames = [tableNames copy];
@@ -119,22 +121,26 @@
 }
 
 + (NSString *)addColumnStatementBy:(NSString *)table column:(FMDBTableColumn *)column {
-    if (table.length > 0 && [column isKindOfClass:[FMDBTableColumn class]] &&
-        column.isValidObject) {/*next*/} else {
+    NSString *safeTable = FMDBSafeString(table);
+    FMDBGuard(safeTable.length > 0 &&
+              [column isKindOfClass:[FMDBTableColumn class]] &&
+              column.isValidObject) else {
         return nil;
     }
     NSMutableString *columnDef = [NSMutableString stringWithFormat:@"%@ %@", column.name, column.datatype];
     if (column.constraint.length > 0) {
         [columnDef appendFormat:@" %@", column.constraint];
     }
-    return [NSString stringWithFormat:@"ALTER TABLE %@ ADD COLUMN %@;", table, columnDef];
+    return [NSString stringWithFormat:@"ALTER TABLE %@ ADD COLUMN %@;", safeTable, columnDef];
 }
 
 + (NSString *)dropColumnStatementBy:(NSString *)table column:(NSString *)column {
-    if (table.length > 0 && column.length > 0) {/*next*/} else {
+    NSString *safeTable = FMDBSafeString(table);
+    NSString *safeColumn = FMDBSafeString(column);
+    FMDBGuard(safeTable.length > 0 && safeColumn.length > 0) else {
         return nil;
     }
-    return [NSString stringWithFormat:@"ALTER TABLE %@ DROP COLUMN %@;", table, column];
+    return [NSString stringWithFormat:@"ALTER TABLE %@ DROP COLUMN %@;", safeTable, safeColumn];
 }
 
 @end

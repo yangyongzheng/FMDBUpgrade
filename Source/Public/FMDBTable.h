@@ -23,6 +23,15 @@ NS_ASSUME_NONNULL_BEGIN
 ///   - name: 列名称
 ///   - datatype: 列数据类型，可参考 https://sqlite.org/datatype3.html
 ///   - constraint: 列约束，可参考 https://sqlite.org/syntax/column-constraint.html
+- (instancetype)initWithName:(NSString *)name
+                    datatype:(NSString *)datatype
+                  constraint:(nullable NSString *)constraint NS_DESIGNATED_INITIALIZER;
+
+/// 表列初始化
+/// - Parameters:
+///   - name: 列名称
+///   - datatype: 列数据类型，可参考 https://sqlite.org/datatype3.html
+///   - constraint: 列约束，可参考 https://sqlite.org/syntax/column-constraint.html
 + (instancetype)columnWithName:(NSString *)name
                       datatype:(NSString *)datatype
                     constraint:(nullable NSString *)constraint;
@@ -40,12 +49,28 @@ NS_ASSUME_NONNULL_BEGIN
 /// 添加或删除表列时，是否需要更改表结构，默认值 NO。
 @property (nonatomic, readonly) BOOL shouldChangesSchema;
 
+/// 表初始化，相当于 [self initWithName:name columns:columns shouldChangesSchema:NO];
+/// - Parameters:
+///   - name: 表名称
+///   - columns: 表列数组
+- (instancetype)initWithName:(NSString *)name
+                     columns:(NSArray<FMDBTableColumn *> *)columns;
+
 /// 表初始化，相当于 [self tableWithName:name columns:columns shouldChangesSchema:NO];
 /// - Parameters:
 ///   - name: 表名称
 ///   - columns: 表列数组
 + (instancetype)tableWithName:(NSString *)name
                       columns:(NSArray<FMDBTableColumn *> *)columns;
+
+/// 表初始化
+/// - Parameters:
+///   - name: 表名称
+///   - columns: 表列数组
+///   - shouldChangesSchema: 添加或删除表列时，是否需要更改表结构
+- (instancetype)initWithName:(NSString *)name
+                     columns:(NSArray<FMDBTableColumn *> *)columns
+         shouldChangesSchema:(BOOL)shouldChangesSchema;
 
 /// 表初始化
 /// - Parameters:

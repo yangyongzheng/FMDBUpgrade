@@ -15,49 +15,54 @@
 // MARK: Public
 
 + (instancetype)yyz_databaseWithName:(NSString *)dbName {
-    FMDBParameterAssert(dbName.length > 0, dbName);
-    
     NSString *path = [FMDBUpgradeHelper databasePathWithName:dbName];
+    FMDBParameterAssert(path != nil, dbName);
     return [self databaseWithPath:path];
 }
 
 - (void)yyz_upgradeTables:(NSArray<FMDBTable *> *)tables {
-    if (tables.count > 0) {/*next*/} else { return; }
+    FMDBGuard(tables && tables.count > 0) else {
+        return;
+    }
     NSArray<FMDBTable *> *safeTables = [tables copy];
     for (FMDBTable *obj in safeTables) {
-        FMDBParameterAssert(obj.name.length > 0, tables);
-        
-        [self yyz_upgradeTable:obj];
+        if ([obj isKindOfClass:[FMDBTable class]] && obj.name.length > 0) {
+            [self yyz_upgradeTable:obj];
+        } else {
+            FMDBParameterAssert(NO, tables);
+        }
     }
 }
 
 - (void)yyz_createTable:(FMDBTable *)table {
-    FMDBParameterAssert(table.name.length > 0 && table.columns.count > 0, table);
-    
     NSString *sql = [FMDBUpgradeHelper createTableStatementBy:table];
+    FMDBParameterAssert(sql != nil, table);
     if (sql) { [self executeUpdate:sql]; }
 }
 
 - (void)yyz_createTables:(NSArray<FMDBTable *> *)tables {
     NSString *sql = [FMDBUpgradeHelper createTableStatementsBy:tables];
+    FMDBParameterAssert(sql != nil, tables);
     if (sql) { [self executeStatements:sql]; }
 }
 
 - (void)yyz_dropTableNamed:(NSString *)tableName {
-    FMDBParameterAssert(tableName.length > 0, tableName);
-    
     NSString *sql = [FMDBUpgradeHelper dropTableStatementBy:tableName];
+    FMDBParameterAssert(sql != nil, tableName);
     if (sql) { [self executeUpdate:sql]; }
 }
 
 - (void)yyz_dropTableNames:(NSArray<NSString *> *)tableNames {
     NSString *sql = [FMDBUpgradeHelper dropTableStatementsBy:tableNames];
+    FMDBParameterAssert(sql != nil, tableNames);
     if (sql) { [self executeStatements:sql]; }
 }
 
 - (void)yyz_inTransaction:(void (NS_NOESCAPE ^)(FMDatabase * _Nonnull, BOOL * _Nonnull))block {
-    FMDBParameterAssert(block != nil, block);
-    
+    if (!block) {
+        FMDBParameterAssert(NO, block);
+        return;
+    }
     // 开始事务
     BOOL requiredRollback = NO;
     [self beginTransaction];
@@ -72,13 +77,12 @@
 
 // MARK: - Private
 
-/// 升级单个表
+/// 升级单个表（调用者判断 table.name 非空）
 - (void)yyz_upgradeTable:(FMDBTable *)table {
-    if (table.name.length > 0) {/*next*/} else { return; }
     if ([self tableExists:table.name]) {
         if (table.columns.count > 0) {
             NSString *sqls = [self yyz_upgradeStatementsWithTable:table];
-            if (sqls.length > 0) {
+            if (sqls && sqls.length > 0) {
                 const BOOL result = [self executeStatements:sqls];
                 NSAssert(result, @"Upgrade failed: %@", sqls);
             }
@@ -202,7 +206,7 @@
     FMResultSet *resultSet = [self getTableSchema:tableName];
     while ([resultSet next]) {
         NSString *columnName = [resultSet stringForColumn:@"name"];
-        if (columnName.length > 0) {
+        if (columnName && columnName.length > 0) {
             [outputSet addObject:columnName];
         }
     }

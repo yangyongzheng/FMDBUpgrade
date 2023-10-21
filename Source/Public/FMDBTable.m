@@ -16,19 +16,29 @@
 
 @implementation FMDBTableColumn
 
+- (instancetype)initWithName:(NSString *)name
+                    datatype:(NSString *)datatype
+                  constraint:(NSString *)constraint {
+    self = [super init];
+    if (self) {
+        NSCharacterSet *characterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+        self.name = [name stringByTrimmingCharactersInSet:characterSet];
+        self.datatype = [datatype stringByTrimmingCharactersInSet:characterSet];
+        self.constraint = [constraint stringByTrimmingCharactersInSet:characterSet];
+    }
+    return self;
+}
+
 + (instancetype)columnWithName:(NSString *)name
                       datatype:(NSString *)datatype
                     constraint:(NSString *)constraint {
-    NSCharacterSet *characterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-    FMDBTableColumn *tableColumn = [[self alloc] init];
-    tableColumn.name = [name stringByTrimmingCharactersInSet:characterSet];
-    tableColumn.datatype = [datatype stringByTrimmingCharactersInSet:characterSet];
-    tableColumn.constraint = [constraint stringByTrimmingCharactersInSet:characterSet];
-    return tableColumn;
+    return [[self alloc] initWithName:name
+                             datatype:datatype
+                           constraint:constraint];
 }
 
 - (BOOL)isValidObject {
-    return self.name.length > 0 && self.datatype.length > 0;
+    return self.name && self.name.length > 0 && self.datatype && self.datatype.length > 0;
 }
 
 - (NSString *)debugDescription {
@@ -52,6 +62,13 @@
 
 @implementation FMDBTable
 
+- (instancetype)initWithName:(NSString *)name
+                     columns:(NSArray<FMDBTableColumn *> *)columns {
+    return [self initWithName:name
+                      columns:columns
+          shouldChangesSchema:NO];
+}
+
 + (instancetype)tableWithName:(NSString *)name
                       columns:(NSArray<FMDBTableColumn *> *)columns {
     return [self tableWithName:name
@@ -59,15 +76,24 @@
            shouldChangesSchema:NO];
 }
 
+- (instancetype)initWithName:(NSString *)name
+                     columns:(NSArray<FMDBTableColumn *> *)columns
+         shouldChangesSchema:(BOOL)shouldChangesSchema {
+    self = [super init];
+    if (self) {
+        self.name = [name stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+        self.columns = columns;
+        self.shouldChangesSchema = shouldChangesSchema;
+    }
+    return self;
+}
+
 + (instancetype)tableWithName:(NSString *)name
                       columns:(NSArray<FMDBTableColumn *> *)columns
           shouldChangesSchema:(BOOL)shouldChangesSchema {
-    NSCharacterSet *characterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-    FMDBTable *table = [[self alloc] init];
-    table.name = [name stringByTrimmingCharactersInSet:characterSet];
-    table.columns = columns;
-    table.shouldChangesSchema = shouldChangesSchema;
-    return table;
+    return [[self alloc] initWithName:name
+                              columns:columns
+                  shouldChangesSchema:shouldChangesSchema];
 }
 
 - (NSString *)debugDescription {

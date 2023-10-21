@@ -14,23 +14,25 @@
 @implementation FMDatabaseQueue (Upgrade)
 
 + (instancetype)yyz_databaseWithName:(NSString *)dbName {
-    FMDBParameterAssert(dbName.length > 0, dbName);
-    
     NSString *path = [FMDBUpgradeHelper databasePathWithName:dbName];
+    FMDBParameterAssert(path != nil, dbName);
     return [self databaseQueueWithPath:path];
 }
 
 - (void)yyz_upgradeTables:(NSArray<FMDBTable *> *)tables {
-    if (tables.count > 0) {/*next*/} else { return; }
+    FMDBGuard(tables && tables.count > 0) else {
+        FMDBParameterAssert(NO, tables);
+        return;
+    }
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_upgradeTables:tables];
     }];
 }
 
 - (void)yyz_createTable:(FMDBTable *)table {
-    FMDBParameterAssert(table.name.length > 0 && table.columns.count > 0, table);
-    
-    if (table.name.length > 0 && table.columns.count > 0) {/*next*/} else {
+    FMDBGuard(table && [table isKindOfClass:[FMDBTable class]] &&
+              table.name.length > 0 && table.columns.count > 0) else {
+        FMDBParameterAssert(NO, table);
         return;
     }
     [self inDatabase:^(FMDatabase * _Nonnull db) {
@@ -39,23 +41,30 @@
 }
 
 - (void)yyz_createTables:(NSArray<FMDBTable *> *)tables {
-    if (tables.count > 0) {/*next*/} else { return; }
+    FMDBGuard(tables && tables.count > 0) else {
+        FMDBParameterAssert(NO, tables);
+        return;
+    }
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_createTables:tables];
     }];
 }
 
 - (void)yyz_dropTableNamed:(NSString *)tableName {
-    FMDBParameterAssert(tableName.length > 0, tableName);
-    
-    if (tableName.length > 0) {/*next*/} else { return; }
+    FMDBGuard(tableName && tableName.length > 0) else {
+        FMDBParameterAssert(NO, tableName);
+        return;
+    }
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_dropTableNamed:tableName];
     }];
 }
 
 - (void)yyz_dropTableNames:(NSArray<NSString *> *)tableNames {
-    if (tableNames.count > 0) {/*next*/} else { return; }
+    FMDBGuard(tableNames && tableNames.count > 0) else {
+        FMDBParameterAssert(NO, tableNames);
+        return;
+    }
     [self inDatabase:^(FMDatabase * _Nonnull db) {
         [db yyz_dropTableNames:tableNames];
     }];

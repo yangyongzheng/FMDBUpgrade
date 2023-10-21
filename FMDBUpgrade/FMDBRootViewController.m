@@ -48,7 +48,13 @@
 }
 
 - (void)nextActionItem:(UIBarButtonItem *)item {
-    
+    dispatch_async(self.taskQueue, ^{
+        [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            NSString *queryCountStatement = [NSString stringWithFormat:@"SELECT count(*) FROM %@;", @"start"];
+            const long totalCount = [db longForQuery:queryCountStatement];
+            NSLog(@"%ld", totalCount);
+        }];
+    });
 }
 
 - (IBAction)upgradeButtonAction:(UIButton *)sender {
@@ -57,25 +63,22 @@
 
 - (void)upgradeText {
     dispatch_async(self.taskQueue, ^{
-        [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
-            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, title) VALUES (%@, %@);",
-                                 [self dataWithDictionary:@{@"class": @1, @"age": @22}], @"张三"];
-            NSAssert(result, @"<1>插入失败");
-        }];
+        for (NSInteger i = 0; i < 100; i++) {
+            [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+                const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, title) VALUES (%@, %@);",
+                                     [self dataWithDictionary:@{@"class": @(i), @"age": @(i)}], @"张三"];
+                NSAssert(result, @"<1>插入失败");
+            }];
+        }
     });
     dispatch_async(self.taskQueue, ^{
-        [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
-            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, title) VALUES (%@, %@);",
-                                 [self dataWithDictionary:@{@"class": @2, @"age": @23}], @"李四"];
-            NSAssert(result, @"<2>插入失败");
-        }];
-    });
-    dispatch_async(self.taskQueue, ^{
-        [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
-            const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, title) VALUES (%@, %@);",
-                                 [self dataWithDictionary:@{@"class": @3, @"age": @24}], @"王五"];
-            NSAssert(result, @"<3>插入失败");
-        }];
+        for (NSInteger i = 0; i < 100; i++) {
+            [self.dbQueue inDatabase:^(FMDatabase * _Nonnull db) {
+                const BOOL result = [db executeUpdateWithFormat:@"INSERT INTO start (data, title) VALUES (%@, %@);",
+                                     [self dataWithDictionary:@{@"class": @(i), @"age": @(i)}], @"李四"];
+                NSAssert(result, @"<1>插入失败");
+            }];
+        }
     });
 }
 

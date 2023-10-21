@@ -15,6 +15,15 @@ NS_ASSUME_NONNULL_BEGIN
     NSAssert((condition), @"Invalid parameter not satisfying: %@", @#desc)
 #endif
 
+#ifndef FMDBGuard
+#define FMDBGuard(condition) if ((condition)) {/*do-nothing*/}
+#endif
+
+
+/// value is NSString 时过滤首尾空格和换行符后返回结果，否则返回空字符串。
+FOUNDATION_EXPORT NSString *FMDBSafeString(id value);
+
+
 @class FMDBTable, FMDBTableColumn;
 
 @interface FMDBUpgradeHelper : NSObject
